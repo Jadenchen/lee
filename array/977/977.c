@@ -33,9 +33,43 @@ static void show(int *nums, int size)
 	printf("\n");
 }
 
-static void merge_sort(int *nums, int start, int end)
+static void merge(int *nums, int left, int mid, int right)
 {
-		
+	int n1 = mid - left + 1;
+	int n2 = right - mid;
+	int aleft[n1];
+	int aright[n2];
+	int index = 0;	
+	int n1_idx = 0;
+	int n2_idx = 0;
+	//! copy data
+	for (size_t i = 0; i < n1; i++) 
+		aleft[i] = nums[left + i];
+	for (size_t i = 0; i < n2; i++)
+		aright[i] = nums[mid + i];	
+
+	while(n1_idx < n1 && n2_idx < n2) {
+		if (aleft[n1_idx] > aright[n2_idx])
+			nums[index++] = aright[n2_idx++];
+		else 
+			nums[index++] = aleft[n1_idx++];
+	}
+	//! copy rest data
+	while (n1_idx < n1) 
+		nums[index++] = aleft[n1_idx++];
+	
+	while(n2_idx < n2) 
+		nums[index++] = aright[n2_idx++];
+}
+
+static void merge_sort(int *nums, int left, int right)
+{
+	if (left < right) {
+		int mid = left + (right - left)/2;
+		merge_sort(nums, left, mid);
+		merge_sort(nums, mid + 1, right);
+		merge(nums, left, mid, right);
+	}
 }
 
 int main(void)
@@ -43,8 +77,9 @@ int main(void)
 	int nums[5] = {-4,-1,0,3,10};
 	int len = sizeof(nums)/sizeof(int);
 	mul(nums, len);
+	show(nums, len);
 //	bubble_sort(nums, len);	
-	merge_sort(nums, 0, len);
+	merge_sort(nums, 0, len - 1);
 	show(nums, len);
 	return 0;
 }
