@@ -39,20 +39,22 @@ static void merge(int *nums, int left, int mid, int right)
 	int n2 = right - mid;
 	int aleft[n1];
 	int aright[n2];
-	int index = 0;	
+	int index = left;
 	int n1_idx = 0;
 	int n2_idx = 0;
 	//! copy data
 	for (size_t i = 0; i < n1; i++) 
 		aleft[i] = nums[left + i];
+
 	for (size_t i = 0; i < n2; i++)
-		aright[i] = nums[mid + i];	
+		aright[i] = nums[mid + 1 + i];	
 
 	while(n1_idx < n1 && n2_idx < n2) {
 		if (aleft[n1_idx] > aright[n2_idx])
 			nums[index++] = aright[n2_idx++];
 		else 
 			nums[index++] = aleft[n1_idx++];
+
 	}
 	//! copy rest data
 	while (n1_idx < n1) 
