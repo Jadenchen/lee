@@ -16,9 +16,9 @@ static void merge(int *nums, int left, int mid, int right)
 		aright[i] = nums[mid + 1 + i];
 	while(l_idx < n1 && r_idx < n2) {
 		if (aleft[l_idx] > aright[r_idx])
-			nums[idx++] = aright[r_idx++];
-		else 
 			nums[idx++] = aleft[l_idx++];
+		else 
+			nums[idx++] = aright[r_idx++];
 	}
 	while(l_idx < n1)
 		nums[idx++] = aleft[l_idx++];
@@ -39,8 +39,19 @@ static void sort(int *nums, int left, int right)
 
 static int find(int *nums, int len, int target)
 {
-	static int size = 0;
-	for (size_t i = 0; i 
+	//! assume nums all smaller than target 
+	int i = 0;
+	if (target == 0)
+		return 0;
+	
+	for (i = 0; i < len; i++) {
+		target = target - nums[i];
+		if (target == 0)
+			break;
+	}	
+
+	return i == len ? (-1) : (i + 1);
+}
 	
 static int find_min_sum(int *nums, int len, int sum)
 {
@@ -58,9 +69,14 @@ static int find_min_sum(int *nums, int len, int sum)
 
 int main(void)
 {
-	int nums[6] = {2,3,1,2,4,3};
-	int len = sizeof(nums)/sizeof(int);
+#if 0
 	int sum = 7;
+	int nums[6] = {2,3,1,2,4,3};
+#else 
+	int sum = 11;
+	int nums[8] = {1,1,1,1,1,1,1,1};
+#endif
+	int len = sizeof(nums)/sizeof(int);
 	printf("len %d \n", find_min_sum(nums, len, sum));
 	return 0;
 }
