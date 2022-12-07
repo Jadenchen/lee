@@ -51,51 +51,24 @@ list *create_list(int *pa, int len)
 	}
 	return new;
 }	
-
-static void remove_node(list **pplist, int target)
+//! this could leak
+static list* remove_node(list *head, int target)
 {
-#if 0
-	list *remove = NULL;
-	list **indir = pplist;
-	int bfound = -1;
-	if (!*pplist)
-		return;
-	
-	while((*indir)->next) {
-		if ((*indir)->val == target) {
-			bfound = 1;
-			break;
-		}
-		indir = &(*indir)->next;
-	}	
-
-	if (found) {
-		list *remove = (*indir);
-		(*indir) = (bfind*indir)->next;
-		free(*indir);
-	}
-#else 
+	list *curr = head;
 	list *prev = NULL;
-	list *remove = NULL;
-	list *curr = *pplist;
+	if (!head)
+		return NULL;
 	while(curr) {
 		if (curr->val == target) {
-			if (curr == *pplist) {
-				remove = curr;
-				*pplist = (*pplist)->next;
-				curr = *pplist;	
-			} else {
-				remove = curr;
-				curr = curr->next;
-				prev ->next = curr;
-			}
-			free(remove);
-			continue;
-		}
-		prev = curr;
+			if (!prev)
+				head = head->next;
+			else 
+				prev->next = curr->next;
+		} else 
+			prev = curr;
 		curr = curr->next;
 	}
-#endif
+	return head;
 }
 
 int main(void) 
@@ -114,7 +87,7 @@ int main(void)
 	if (!pa)
 		return -1;
 	show_list(pa);
-	remove_node(&pa, target);
+	pa = remove_node(pa, target);
        	show_list(pa);	
 	release_list(pa);
 	return 0;
