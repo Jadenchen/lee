@@ -51,32 +51,56 @@ list *create_list(int *pa, int len)
 	return new;
 }	
 
-static void swap_twonode(list **pplsit)
+static int get_len(list *head)
 {
-	if (!*pplist)
-		return;
+	int len = 0;
+	if(!head)
+		return len;
+	while(head) {
+		len++;
+		head = head->next;
+	}
+	return len;
+}
 
+static list *swappairs(list *head)
+{
+	list *curr = head;
+	list *next = NULL; 
+	list *nn = NULL;
+	int len = 0;	
+	if (!head || !head->next)
+		return NULL;
+	len = get_len(head)
+	len = len/2;
+	next = curr->next;
+	nn = next->next;
+
+	for (size_t i = 0; i < len; i++) {
+		//! list del
+		list_del(curr);
+		//! list_add
+		list_add(curr, next);
+		curr = nn;
+		next = curr->next;
+		nn = next->next;	
+	}
+
+	return head;
 }
 
 int main(void) 
 {
-	int num[] = {1, 2, 6, 3, 4, 5, 6};
-	///int num[] = {6, 2, 6, 3, 4, 5, 6};
-	//int num[] = {6, 6};
-
-	//! 1->2->6->3->4->5->6
-	//
+	int num[] = {1, 2, 3, 4};
 	int len = sizeof(num)/sizeof(int);
 	list *pa = NULL;
-	int target = 6;
-	int index = 3;
-	
 	pa = create_list(num, len);
 	if (!pa)
 		return -1;
 	
 	show_list(pa);
-	printf("reverse\n");
+	pa = swappairs(pa);
+	show_list(pa);
 	release_list(pa);
 	return 0;
 }
