@@ -63,27 +63,44 @@ static int get_len(list *head)
 	return len;
 }
 
+static void list_del(list *remove, list *prev)
+{
+	list *next = remove->next;
+	if (prev)
+		prev->next = next;	
+	remove->next = NULL;
+}
+
+static void list_add(list *add, list *curr)
+{
+	list *next = curr->next;
+	add->next = next;
+	curr->next = add;
+}
+
 static list *swappairs(list *head)
 {
+	list *prev = NULL;
 	list *curr = head;
 	list *next = NULL; 
 	list *nn = NULL;
 	int len = 0;	
 	if (!head || !head->next)
 		return NULL;
-	len = get_len(head)
+	len = get_len(head);
 	len = len/2;
-	next = curr->next;
-	nn = next->next;
+//	next = curr->next;
+//	nn = next->next;
+	
+	head = curr->next;
 
 	for (size_t i = 0; i < len; i++) {
-		//! list del
-		list_del(curr);
-		//! list_add
-		list_add(curr, next);
-		curr = nn;
 		next = curr->next;
 		nn = next->next;	
+		list_del(curr, prev);
+		list_add(curr, next);
+		prev = curr;
+		curr = nn;
 	}
 
 	return head;
@@ -91,7 +108,7 @@ static list *swappairs(list *head)
 
 int main(void) 
 {
-	int num[] = {1, 2, 3, 4};
+	int num[] = {1, 2, 3, 4, 5, 6};
 	int len = sizeof(num)/sizeof(int);
 	list *pa = NULL;
 	pa = create_list(num, len);
