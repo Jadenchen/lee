@@ -9,22 +9,21 @@ static int isanagram(char *ori, char *cmp)
 	int len1 = 0;
 	int len2 = 0;
 	int diff = 0;
-	char *curr = NULL;
 	len1 = strlen(ori);
 	len2 = strlen(cmp);
 	if (len1 != len2)
 		goto ERR;
 
 	for (size_t i = 0; i < len1; i++) {
-		curr = ori + i;
-		diff = *curr - A;
+		diff = *ori - A;
 		str[diff]++;
+		ori++;
 	}
 
 	for (size_t i = 0; i < len1; i++) {
-		curr = cmp + i;
-		diff = *curr - A;
+		diff = *cmp - A;
 		str[diff]--;
+		cmp++;
 	}
 	for (size_t i = 0; i < LEN; i++) {
 		if (str[i] != 0) {
