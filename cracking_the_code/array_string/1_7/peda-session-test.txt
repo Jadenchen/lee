@@ -1,0 +1,2 @@
+break /home/menzx/github/lee/cracking_the_code/array_string/1_7/1_7.c:27
+
