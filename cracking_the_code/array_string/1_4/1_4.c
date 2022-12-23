@@ -1,55 +1,84 @@
 #include <stdio.h>
 #include <string.h>
 
-void cal(char *tmp, int len, char *input)
+void show(int *hash)
 {
-	int index = 0;
-	for (size_t i = 0; i < len; i++) {
-		//! convert 
-		index = input[i];
-		if (index > 65 && index < 90)
-			tmp[index - 65]++;
-		else 
-			tmp[index - 97]++;
-	}
+	for (size_t i = 0; i < 26; i++)
+		printf(" %d ", hash[i]);
+	printf("\n");
 }
 
-int ispalindrom(char *a, char *b)
+int isPermutationPalindrome(char *s)
 {
-	int isPalin = 1;
+	int bpp = 1;
+	int hash[26] = {0};
 	int index = 0;
-	int len1 = strlen(a);
-	int len2 = strlen(b);
-	char arr1[26] = {0};
-	char arr2[26] = {0};
-	if (len1 != len2) {
-		isPalin = 0;
-		return isPalin; 
+	int len = strlen(s);
+	int diff = 0;
+	for (size_t i = 0; i < len; i++) {
+		index = s[i] - 'a';
+		hash[index]++;
 	}
 
-	cal(arr1, len1, a);
-	cal(arr2, len1, b);
+	show(hash);
+	//! only one odd and other even
+	for (size_t i = 0; i < 26; i++) {
+		if (hash[i] %2 == 1) {
+			diff++;
+			continue;
+		} 
+	}
 	
-	for (size_t i = 0; i < len1; i++) {
-		if (arr1[i] != arr2[i]) {
-			printf("1 %d 2 %d i %zu \n",arr1[i], arr2[i], i);
-			isPalin = 0;
+	if (diff > 1)
+		bpp = 0;
+	//! time O(N)
+	//! space O(1)
+	return bpp;
+}
+
+int checklen(char *s)
+{
+	int len = 0;
+	char *cur = s;
+	while(cur) {
+		if (*cur == '\0')
+			break;
+
+		if (*cur == ' ') {
+			cur++;
+			continue;
+		}
+		len++;
+		cur++;
+	}
+	return len;
+}
+//! check palindrome
+int checkPalindrome(char *s)
+{
+	int bPalindrome = 1;
+	int len = strlen(s);
+	for (size_t i = 0; i < len/2; i++) {
+		if (s[i] != s[len - 1 - i]) {
+			bPalindrome = 0;
 			break;
 		}
 	}
-
-	return isPalin;
-}	
+	return bPalindrome;
+}
 
 int main(void)
 {
-	char a[10] = "TactCoa";
-	char b[10] = "tacocat";
-	if (ispalindrom(a, b)) {
-		printf("yes\n");
+	//! assume all lower case
+	//! assume no space
+	char a[100] = "tactcoa";
+       
+      	printf("len %d \n", checklen(a));
+	printf("palindrome %d \n", checkPalindrome("madam"));
+	if (isPermutationPalindrome(a)) {
+		printf("yes permute palin\n");
 	} else {
-		printf("no\n");
+		printf("no permute palin\n");
 	}
-
 	return 0;
 }
