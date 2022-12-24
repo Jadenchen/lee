@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
-int isReplace(char *a, char *b)
+int isReplace(char *fir, char *sec)
 {
-	char *curr = a;
-	char *dst = b;
 	int diff = 0;
 	int bReplace = 1;
-	int len = strlen(a);
+	int len = strlen(fir);
 	for (size_t i = 0; i < len; i++) {
-		if (curr[i] != dst[i]) {
+		if (fir[i] != sec[i]) {
 			diff++;
 			if (diff > 1) {
 				bReplace = 0;
@@ -20,61 +18,43 @@ int isReplace(char *a, char *b)
 
 	return bReplace;
 }
-
-int isInsert(char *a, char *b)
-{
-	int len = strlen(a);
-	int diff = 0;
-	int cnt = 0;
+//! index diff
+int isInsert(char *fir, char *sec)
+{	
 	int bInsert = 1;
-	len = len + 1;
-	for (size_t i = 0; i < len; i++) {
-		if (a[i] == b[i])
-			cnt++;
-		else {
-			diff++;
-			if (diff > 1) {
+	int len_fir = strlen(fir);
+	int len_sec = strlen(sec);
+	int index_fir = 0;
+	int index_sec = 0;
+
+	while(index_fir < len_fir && index_sec < len_sec) {
+		if (fir[index_fir] != sec[index_sec]) {
+			if (index_fir != index_sec) {
 				bInsert = 0;
 				break;
 			}
-		}		
-	}
-
+			index_sec++;
+		} else {
+			index_fir++;
+			index_sec++;
+		}
+	}	
 	return bInsert;
 }
 
-int isRemove(char *a, char *b)
+int isOneEdit(char *first, char *second)
 {
-	int len = strlen(a);
-	int diff = 0;
-	int bRemove = 1;
-	
-	for (size_t i = 0; i < len; i++) {
-		if (a[i] != b[i]) {
-			diff++;
-			if (diff > 1) {
-				bRemove = 1;
-				break;
-			}	
-		}
-	}
-
-	return bRemove;
-}
-
-int isOneEdit(char *a, char *b)
-{
-	int lena = strlen(a);
-	int lenb = strlen(b);
-	if (lena == lenb) {
+	int len_fir = strlen(first);
+	int len_sec = strlen(second);
+	if (len_fir == len_sec) {
 		//! replace
-		return isReplace(a, b);
-	} else if ((lena + 1) ==  lenb) {
+		return isReplace(first, second);
+	} else if ((len_fir + 1) ==  len_sec) {
 		//! insert
-		return isInsert(a, b);
-	} else if ((lena - 1) == lenb) { 
+		return isInsert(first, second);
+	} else if ((len_fir - 1) == len_sec) { 
 		//! remove
-		return isRemove(a, b);
+		return isInsert(second, first);
 	}
 
 	return 0;

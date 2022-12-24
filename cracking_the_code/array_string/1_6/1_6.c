@@ -41,12 +41,13 @@ char *cmpr(char *input)
 		return new;
 	}
 }
-
+//! time O(n) space(1)
 int main(void)
 {
 	char a[20] = "aabcccccaaa";
 	char *tmp = NULL;
 	tmp = cmpr(a);
+	printf("a %s \n", a);
 	if (tmp) {
 		printf("%s \n", tmp);
 	}

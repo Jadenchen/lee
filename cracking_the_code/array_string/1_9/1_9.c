@@ -21,24 +21,26 @@ int isRotate(char *a, char *b)
 	char *pb = b;
 	int b_cnt = 0;
 	int index = 0;
+	int cnt = 0;
 	//! find first 
 	int len = strlen(a);
 	if (find(&index, *pa, b, len)) {
-		pb = pb + index;
 		for (size_t i = 0; i < len; i++) {
-			if (*pa != *pb) {
-				bRotate = 1;
-				break;
-			}
+			pb = &b[(index + i +len)%len];
+			if (*pa == *pb) {
+				cnt++;
+			} 
 			pa++;
-			pb = pb + ((i + len)%len);
 		}
+		if (cnt == len) 
+			bRotate = 1;
 		return bRotate;
 	}  
 
 	return bRotate;
-		
 }
+
+//! time O(n) space O(1)
 int main(void)
 {
 	char a[12] = "waterbottle";

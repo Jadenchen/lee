@@ -28,7 +28,7 @@ void rotate(int a[][4], int len)
 		}
 	}
 }
-
+//! time O(n2) space O(1)
 int main(void)
 {
 	int a[4][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}, 
