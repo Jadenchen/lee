@@ -119,7 +119,6 @@ list *deleteDuplicates(list *head)
 			while(tmp && tmp->val == (*indir)->val)
 				tmp = tmp->next;
 			*indir = tmp;
-
 		} else 
 			indir = (*indir)->next;
 	}
