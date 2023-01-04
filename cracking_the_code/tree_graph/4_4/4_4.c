@@ -68,18 +68,30 @@ int get_height(tree *root)
 	return left > right ? left + 1 : right + 1;
 }
 
-bool check(tree *root)
-{
-	
-	
+#define ERROR (65536)
 
+int check(tree *root)
+{
+	if (!root)
+		return 0;
+	int left = check(root->left);
+	if (left ==  ERROR) 
+		return ERROR;
+	int right = check(root->right);
+	if (right == ERROR)
+		return ERROR;
+	if (abs(left - right) > 1) {
+		return ERROR;	
+	} else {
+		return left > right ? left + 1 : right + 1;
+	}
 }
 
 int isBalanced(tree *root)
 {
 	if (!root)
 		return true;
-	return check(root);
+	return check(root) != ERROR;
 }
 
 tree *new_node(int val)
