@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-
+#define ERROR (65536)
 #define STACK_SIZE (1000)
 #define addr2uint(x) ((uint64_t)(void *)(x))
 #define uint2addr(x) ((void *)(uint64_t)(x))
@@ -18,6 +18,16 @@ typedef struct stack {
 	uint64_t a[STACK_SIZE];
 	int top;
 } stack;
+
+uint64_t peek(stack *ptStack)
+{
+	int index = 0;
+	if (ptStack->top == 0)
+		return ERROR;
+	
+	index = ptStack->top - 1;
+	return ptStack->a[index];
+}
 
 void push(stack *ptStack, void *addr)
 {
@@ -58,6 +68,33 @@ static void postorder(tree *head)
 	printf("%d ", head->val);
 }
 
+static void postorder_inter(tree *root)
+{
+	stack st;
+	tree *curr = NULL;
+	tree *lastvisited = NULL;
+	uint64_t tmp;
+
+	memset(&st, 0, sizeof(stack));
+	curr = root;
+	while(!isEmpty(&st) || curr) {
+		if (curr) {
+			push(&st, (void  *)curr);
+			curr = curr->left;
+		} else {
+			tree *peeknode = (tree *)uint2addr(peek(&st));
+			if (peeknode->right && lastvisited != peeknode->right) {
+				curr = peeknode->right;
+			} else {
+				pop(&st, &tmp);
+				lastvisited = (tree *) uint2addr(tmp);
+				printf("%d ", lastvisited->val);
+			}	
+		}	
+	}
+	printf("\n");
+}
+
 static void inorder(tree *head)
 {
 	if (!head)
@@ -79,7 +116,6 @@ static void inorder_inter(tree *head)
 			push(&st, (void *)curr);
 			curr = curr->left;
 		} else {
-			//! pop
 			pop(&st, &tmp);
 		       	tree *pTmp = (tree *)uint2addr(tmp);	
 			printf("%d ", pTmp->val);	
@@ -111,7 +147,7 @@ static void preorder_inter(tree *head)
 	while(!isEmpty(&st)) {
 		pop(&st, &tmp);
 		curr = (tree *) uint2addr(tmp);
-		printf(" %d ", curr->val); 	
+		printf("%d ", curr->val); 	
 		if (curr->right) {
 			push(&st, (void *)curr->right);
 		}
@@ -244,6 +280,33 @@ int isValidBST(tree *root)
 	return isValid;
 }
 
+void inorder_put(tree *root, int *pa, int *cnt)
+{
+	if (!root)
+		return;
+	inorder_put(root->left, pa, cnt);
+	pa[*cnt] = root->val;
+	*cnt = *cnt + 1;
+	inorder_put(root->right, pa, cnt);
+}
+
+int isValidBst(tree *root)
+{
+	int a[STACK_SIZE] = {0};
+	int cnt = 0;
+	int isValid = 1;
+	inorder_put(root, a, &cnt);
+	//! compare
+	cnt = cnt - 1;
+	for (int i = 0; i <= cnt; i++) {
+		if (a[i] >= a[i+1]) {
+			isValid = 0;
+			break;
+		}
+	}
+	return isValid;
+}
+
 int main(void)
 {
 	//   5 
@@ -259,16 +322,7 @@ int main(void)
 	
 	preorder_inter(root);
 	inorder_inter(root);
-	
-#if 0
-	preorder(root);
-	printf("\n");
-//	inorder(root);
-	printf("\n");
-	postorder(root);
-	printf("\n");
-
-	printf("balance %d \n", isBalanced(root));
-#endif
+	postorder_inter(root);
+	printf("is BST %d \n", isValidBst(root));	
 	return 0 ;
 }
