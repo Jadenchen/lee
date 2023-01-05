@@ -1,12 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+
+#define STACK_SIZE (1000)
+#define addr2uint(x) ((uint64_t)(void *)(x))
+#define uint2addr(x) ((void *)(uint64_t)(x))
 
 typedef struct tree {
 	int val;
 	struct tree *left;
 	struct tree *right;
 } tree;
+
+typedef struct stack {
+	uint64_t a[STACK_SIZE];
+	int top;
+} stack;
+
+void push(stack *ptStack, void *addr)
+{
+	if (!ptStack)
+		return;
+
+	if (ptStack->top + 1 == STACK_SIZE) {
+		return;
+	}
+	
+	ptStack->a[ptStack->top] = addr2uint(addr);
+	ptStack->top++;
+}
+
+void pop(stack *ptStack, uint64_t *data)
+{
+	if (!ptStack)
+		return;
+
+	if (ptStack->top - 1 < 0)
+		return;
+
+	ptStack->top--;	
+	*data = ptStack->a[ptStack->top]; 
+}	
+
+int isEmpty(stack *ptStack)
+{
+	return ptStack->top == 0;
+}
 
 static void postorder(tree *head)
 {
@@ -26,6 +67,28 @@ static void inorder(tree *head)
 	inorder(head->right);
 }
 
+static void inorder_inter(tree *head)
+{
+	stack st;
+	tree *curr = NULL;
+	uint64_t tmp = 0;	
+	memset(&st, 0, sizeof(stack));
+	curr = head;
+	while(curr || !isEmpty(&st)) {
+		if (curr) {
+			push(&st, (void *)curr);
+			curr = curr->left;
+		} else {
+			//! pop
+			pop(&st, &tmp);
+		       	tree *pTmp = (tree *)uint2addr(tmp);	
+			printf("%d ", pTmp->val);	
+			curr = pTmp->right;
+		}	
+	}
+	printf("\n");
+}
+
 static void preorder(tree *head)
 {
 	if (!head)
@@ -33,6 +96,31 @@ static void preorder(tree *head)
 	printf("%d ", head->val);
 	preorder(head->left);
 	preorder(head->right);
+}
+
+static void preorder_inter(tree *head)
+{
+	stack st;
+	tree *curr = NULL;
+	uint64_t tmp = 0;
+	if (!head)
+		return;
+
+	memset(&st, 0, sizeof(stack));
+	push(&st,(void *)head);
+	while(!isEmpty(&st)) {
+		pop(&st, &tmp);
+		curr = (tree *) uint2addr(tmp);
+		printf(" %d ", curr->val); 	
+		if (curr->right) {
+			push(&st, (void *)curr->right);
+		}
+	       	if (curr->left) {
+			push(&st, (void *)curr->left);	
+		}
+	}
+
+	printf("\n");
 }
 
 static tree *helper(int *nums, int left, int right)
@@ -145,6 +233,7 @@ int isValidBST(tree *root)
 	inorderput(root, a, &cnt);
 	
 	//! compare each element
+	printf("cnt %d \n", cnt);
 	cnt = cnt - 1;
 	for (size_t i = 0; i < cnt; i++) {
 		if (a[i] > a[i + 1]) {
@@ -152,23 +241,25 @@ int isValidBST(tree *root)
 			break;
 		}
 	}
-		
 	return isValid;
 }
 
 int main(void)
 {
+	//   5 
+	// 1   4 
+	//    3 6 
+	//
+	// inorder 1 5 3 4 6
 	tree *root = new_node(5);
 	root->left = new_node(1);
 	root->right = new_node(4);
 	root->right->left = new_node(3);
 	root->right->right = new_node(6);
 	
-	//levelorder(root);
-	printf("valiidate  %d \n", isValidBST(root));
-
-	inorder(root);
-	printf("\n");
+	preorder_inter(root);
+	inorder_inter(root);
+	
 #if 0
 	preorder(root);
 	printf("\n");
