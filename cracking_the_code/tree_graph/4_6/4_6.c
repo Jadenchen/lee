@@ -1,0 +1,325 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#define ERROR (65536)
+#define STACK_SIZE (1000)
+#define addr2uint(x) ((uint64_t)(void *)(x))
+#define uint2addr(x) ((void *)(uint64_t)(x))
+
+typedef struct tree {
+	int val;
+	struct tree *left;
+	struct tree *right;
+} tree;
+
+typedef struct stack {
+	uint64_t a[STACK_SIZE];
+	int top;
+} stack;
+
+uint64_t peek(stack *ptStack)
+{
+	int index = 0;
+	if (ptStack->top == 0)
+		return ERROR;
+	
+	index = ptStack->top - 1;
+	return ptStack->a[index];
+}
+
+void push(stack *ptStack, void *addr)
+{
+	if (!ptStack)
+		return;
+
+	if (ptStack->top + 1 == STACK_SIZE) {
+		return;
+	}
+	
+	ptStack->a[ptStack->top] = addr2uint(addr);
+	ptStack->top++;
+}
+
+void pop(stack *ptStack, uint64_t *data)
+{
+	if (!ptStack)
+		return;
+
+	if (ptStack->top - 1 < 0)
+		return;
+
+	ptStack->top--;	
+	*data = ptStack->a[ptStack->top]; 
+}	
+
+int isEmpty(stack *ptStack)
+{
+	return ptStack->top == 0;
+}
+
+static void postorder(tree *head)
+{
+	if (!head)
+		return;
+	postorder(head->left);
+	postorder(head->right);
+	printf("%d ", head->val);
+}
+
+static void postorder_inter(tree *root)
+{
+	stack st;
+	tree *curr = NULL;
+	tree *lastvisited = NULL;
+	uint64_t tmp;
+
+	memset(&st, 0, sizeof(stack));
+	curr = root;
+	while(!isEmpty(&st) || curr) {
+		if (curr) {
+			push(&st, (void  *)curr);
+			curr = curr->left;
+		} else {
+			tree *peeknode = (tree *)uint2addr(peek(&st));
+			if (peeknode->right && lastvisited != peeknode->right) {
+				curr = peeknode->right;
+			} else {
+				pop(&st, &tmp);
+				lastvisited = (tree *) uint2addr(tmp);
+				printf("%d ", lastvisited->val);
+			}	
+		}	
+	}
+	printf("\n");
+}
+
+static void inorder(tree *head)
+{
+	if (!head)
+		return;
+	inorder(head->left);
+	printf("%d ", head->val);
+	inorder(head->right);
+}
+
+static void inorder_inter(tree *head)
+{
+	stack st;
+	tree *curr = NULL;
+	uint64_t tmp = 0;	
+	memset(&st, 0, sizeof(stack));
+	curr = head;
+	while(curr || !isEmpty(&st)) {
+		if (curr) {
+			push(&st, (void *)curr);
+			curr = curr->left;
+		} else {
+			pop(&st, &tmp);
+		       	tree *pTmp = (tree *)uint2addr(tmp);	
+			printf("%d ", pTmp->val);	
+			curr = pTmp->right;
+		}	
+	}
+	printf("\n");
+}
+
+static void preorder(tree *head)
+{
+	if (!head)
+		return;
+	printf("%d ", head->val);
+	preorder(head->left);
+	preorder(head->right);
+}
+
+static void preorder_inter(tree *head)
+{
+	stack st;
+	tree *curr = NULL;
+	uint64_t tmp = 0;
+	if (!head)
+		return;
+
+	memset(&st, 0, sizeof(stack));
+	push(&st,(void *)head);
+	while(!isEmpty(&st)) {
+		pop(&st, &tmp);
+		curr = (tree *) uint2addr(tmp);
+		printf("%d ", curr->val); 	
+		if (curr->right) {
+			push(&st, (void *)curr->right);
+		}
+	       	if (curr->left) {
+			push(&st, (void *)curr->left);	
+		}
+	}
+
+	printf("\n");
+}
+
+static tree *helper(int *nums, int left, int right)
+{
+	//! recursive
+	if (left > right) 
+		return NULL;
+
+	//! choose left middle
+	int p = (left + right)/2;
+
+	tree *root = calloc(1, sizeof(tree));
+	root->val = nums[p];
+	root->left = helper(nums, left, p - 1);
+	root->right = helper(nums, p + 1, right);
+	return root;	
+}
+
+//! time O(N)
+//! space O(logN) 
+
+tree *sortedArrayToBST(int *nums, int length)
+{
+	return helper(nums, 0, length - 1);
+}
+
+int get_height(tree *root)
+{
+	if (!root)
+		return 0;
+	int left = get_height(root->left);
+	int right = get_height(root->right);
+	return left > right ? left + 1 : right + 1;
+}
+
+#define ERROR (65536)
+
+int check(tree *root)
+{
+	if (!root)
+		return 0;
+	int left = check(root->left);
+	if (left ==  ERROR) 
+		return ERROR;
+	int right = check(root->right);
+	if (right == ERROR)
+		return ERROR;
+	if (abs(left - right) > 1) {
+		return ERROR;	
+	} else {
+		return left > right ? left + 1 : right + 1;
+	}
+}
+
+int isBalanced(tree *root)
+{
+	if (!root)
+		return true;
+	return check(root) != ERROR;
+}
+
+tree *new_node(int val)
+{
+	tree *new = calloc(1, sizeof(tree));
+	new->val = val;
+	new->left = NULL;
+	new->right = NULL;
+	return new;
+}
+
+void showlevel(tree *root, int level)
+{
+	if (level == 1)
+		printf("%d ", root->val);
+	else {
+		if (root->left)
+			showlevel(root->left, level - 1);
+		if (root->right)
+			showlevel(root->right, level - 1);
+	}
+}
+
+void levelorder(tree *root)
+{
+	int height = get_height(root);
+
+	printf("height %d \n", height);
+	for (size_t i = 1; i <= height; i++) {
+		showlevel(root, i);
+	}
+	printf("\n");
+}
+
+void inorderput(tree *root, int *pa, int *cnt)
+{
+	if (!root)
+		return;
+	inorderput(root->left, pa, cnt);
+	pa[*cnt] = root->val;
+	*cnt = *cnt + 1;
+	inorderput(root->right, pa, cnt);
+}
+
+int isValidBST(tree *root)
+{
+	//! inorder search 
+	int a[1000] = {0};
+	int cnt = 0;
+	int isValid = 1;
+	inorderput(root, a, &cnt);
+	
+	//! compare each element
+	printf("cnt %d \n", cnt);
+	cnt = cnt - 1;
+	for (size_t i = 0; i < cnt; i++) {
+		if (a[i] > a[i + 1]) {
+			isValid = 0;
+			break;
+		}
+	}
+	return isValid;
+}
+
+void inorder_put(tree *root, uint64_t *pa, int *cnt)
+{
+	if (!root)
+		return;
+	inorder_put(root->left, pa, cnt);
+	pa[*cnt] = addr2uint(root);
+	*cnt = *cnt + 1;
+	inorder_put(root->right, pa, cnt);
+}
+
+tree *inorderSuccessor(tree *root, tree *p)
+{
+	//! inorder put
+	uint64_t a[100] = {0};
+	int cnt = 0;
+	tree *suc = NULL;
+	inorder_put(root, a, &cnt);
+	for (size_t i = 0; i < cnt; i++) {
+		tree *tmp = (tree *)uint2addr(a[i]);
+		if (tmp == p) {
+			if (i + 1 == cnt) {
+				break;
+			} else {
+				suc = (tree *)uint2addr(a[i+1]);
+				break;
+			}
+		}	
+	}
+	return suc;
+}
+
+int main(void)
+{
+	//   2 
+	// 1   3 
+	//
+	tree *root = new_node(2);
+	root->left = new_node(1);
+	root->right = new_node(3);
+	tree *suc = inorderSuccessor(root, root->left);
+	printf("suc val %d \n", suc->val);	
+	return 0 ;
+}
