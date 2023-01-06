@@ -309,20 +309,62 @@ int isValidBst(tree *root)
 
 tree *lowestCommonAncestor(tree *root, tree *p, tree *q)
 {
-	stack st;
-	uint64_t tmp;
+	tree *left = NULL;
+	tree *right = NULL;
+	if (root == p || root == q)
+		return root;
 	
-	tree *ancesor = NULL:
-
-	memset(&st, 0. sizeof(stack));
-	push(&st, (void *)root);	
-
-	while(!isEmpty(&st)) {
-
-
-	}
-	return ancesor;
+	if (root->left)
+		left = lowestCommonAncestor(root->left, p, q);
+	if (root->right)
+		right = lowestCommonAncestor(root->right, p, q);
+	
+	if (left && right)
+		return root;
+	return (left == NULL) ? right : left;	
 }
+
+//! time O (n) space O(n) if skewed tree 
+
+#if 0
+leetcode 235 
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q)
+{
+    #if 0
+     struct TreeNode *left = NULL;
+     struct TreeNode *right = NULL;
+    if (root == p || root == q)
+        return root;
+    if(root->left)
+        left = lowestCommonAncestor(root->left, p, q);
+    if (root->right)
+        right = lowestCommonAncestor(root->right, p, q);
+    if (left && right)
+        return root;
+
+    return (left == NULL) ? right : left;
+    #endif
+    int pval = p->val;
+    int qval = q->val;
+
+    int parval = 0;
+    struct TreeNode *curr = root;
+    struct TreeNode *anc = NULL;
+    while(curr) {
+        parval = curr->val;
+        if (pval > parval && qval > parval) {
+            curr = curr->right;
+        } else if (pval < parval && qval < parval) {
+            curr = curr->left;
+        } else {
+            anc = curr;
+            break;
+        }
+    }
+
+    return anc;
+}
+#endif
 
 int main(void)
 {
