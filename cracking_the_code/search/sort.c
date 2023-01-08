@@ -88,10 +88,40 @@ void mergesort(int *pa, int left, int right)
 	}
 }
 //! time O(n)
-//! space O(n)
+//! space O(n + logn)
 void mergesort_algo(int *pa, int len)
 {
 	mergesort(pa, 0, len - 1);	
+}
+
+int partition(int *pa, int low, int high)
+{
+	int pivot = pa[low];
+	while(low < high) {
+		while(low < high && pa[high] >= pivot)
+			high--;
+		swap(&pa[low], &pa[high]);	
+		while(low < high && pa[low] <= pivot) 
+			low++;
+		swap(&pa[low], &pa[high]);	
+	}
+	return low;
+}
+//! time worst O (n*n)
+//! space O(logn) recursion 
+void quicksort(int *pa, int left, int right)
+{
+	int pivot;
+	if (left < right) {
+		pivot = partition(pa, left, right);
+		quicksort(pa, left, pivot - 1);
+		quicksort(pa, pivot + 1, right);
+	}
+}
+
+void quicksort_algo(int *pa, int len)
+{
+	quicksort(pa, 0, len - 1);
 }
 
 void show(int *pa, int len)
@@ -111,6 +141,7 @@ int main(void)
 	//selectionsort(a, size);
 	//insertsort(a, size);
 	//mergesort_algo(a, size);
+	quicksort_algo(a, size);
 	show(a, size);
 	return 0;
 }	
