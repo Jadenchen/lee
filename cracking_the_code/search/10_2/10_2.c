@@ -8,25 +8,23 @@
 #define addr2uint(x) ((uint64_t)(void *)(x))
 #define uint2addr(x) ((void *)(uint64_t)(x))
 
-
-void show(int *pa, int len)
-{
-	for (size_t i = 0; i < len; i++)
-		printf("%d ", pa[i]);
-	printf("\n");
-}
-
-
-
-int cmp(const void * a, const void * b)
-{
-   return ( *(char *)a - *(char *)b );
-}
+typedef struct hash {
+	int key;
+	struct hash *next;
+}  hash;
 
 char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes)
 {			
-	char *tmp = strs[0];
-	printf("%s \n", tmp);
+	if (!strsSize)
+		return NULL;
+
+	//! hash len
+	*returnSize =  	
+	//! create hash
+	for (size_t i = 0; i < strsSize; i++) {
+		char *tmp = strs[i];
+
+	}
 }
 
 
@@ -36,7 +34,7 @@ int main(void)
 	int returnSize = 0;
 	int *returnColumnSizes = NULL;
 	char ***result = NULL;
-	result = groupAnagrams(a, 3, &returnSize, &returnColumnSizes); 
+	result = groupAnagrams(a, 6, &returnSize, &returnColumnSizes); 
 	for (size_t i = 0; i < returnSize; i++) {
 		for (size_t j = 0; j < returnColumnSizes[i]; j++) {
 			char *tmp = result[i][j];
