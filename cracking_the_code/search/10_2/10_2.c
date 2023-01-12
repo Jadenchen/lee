@@ -74,31 +74,36 @@ static void show(hash **pptHash)
 		while(cur) {
 			printf("key %d str %s\n", cur->key, cur->str);
 			cur = cur->next;
-
 		}
 	}
 }
 
 char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes)
 {			
-	if (!strsSize)
-		return NULL;
-
+	*returnSize = 0;
+	*returnColumnSizes = NULL;
+	int j = 0;
+	char ***result = NULL;
 	int key = 0;
 	int index = 0;
+	int sum = 0;
 	hash *curr = NULL;
 	hash *ahash[HASH_SIZE] = {NULL};
+	if (!strsSize) {
+		return NULL;
+	}
+
 	for (size_t i = 0; i < strsSize; i++) {
 		char *tmp = strs[i];
 		if (!haskey(ahash, tmp, &key, &index)) {
-			//push key
+			// !push key
 			add_hash(ahash, tmp, key); 
 		} else {
 			//! find key
 			add_hash_string(ahash, tmp, key, index);
 		}
 	}
-	show(ahash);
+	//show(ahash);
 	
 	//! fill data
 	for (size_t i = 0; i < HASH_SIZE; i++) {
@@ -107,9 +112,35 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
 			*returnSize = *returnSize + 1;
 		}
 	}
+	//! assume
+	*returnColumnSizes = calloc(*returnSize, sizeof(int));
+	result = (char ***)calloc(*returnSize, sizeof(char **));
+	for (size_t i = 0; i < HASH_SIZE; i++) {
+		curr = ahash[i];
+		if (curr) {
+			sum = 0;
+			while (curr) {
+				curr = curr->next;
+				sum = sum + 1;
+			}
+			(*returnColumnSizes)[i] = sum;
+		}
+	}
 
-	*returnColumnSizes = (int *)calloc(*returnSize, sizeof(int *));
+	for (size_t i = 0; i < *returnSize; i++) {
+		result[i] = (char **) calloc((*returnColumnSizes)[i], sizeof(char *));
+	}
+	
+	for (size_t i = 0; i < *returnSize; i++) {
+		curr = ahash[i];
+		j = 0;
+		while(curr) {
+			result[i][j++] = strdup(curr->str);			
+			curr = curr->next;
+		}
+	}
 
+	return result;
 }
 
 int main(void)
@@ -121,8 +152,7 @@ int main(void)
 	result = groupAnagrams(a, 6, &returnSize, &returnColumnSizes); 
 	for (size_t i = 0; i < returnSize; i++) {
 		for (size_t j = 0; j < returnColumnSizes[i]; j++) {
-			char *tmp = result[i][j];
-			printf("%s ", tmp);
+			printf("%s ", result[i][j]);
 		}
 		printf("\n");
 	}
