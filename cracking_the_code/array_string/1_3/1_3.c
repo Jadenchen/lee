@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#if 0
 void replace(char *a, char *b)
 {
 	int len = strlen(a);
 	int spacecnt = 0;
 	char *curr = a;
 	char *dst = b;
-	printf("len %d \n", len);
 	for (size_t i = 0; i < len; i++) {
 		if (*curr != ' ') 
 			*dst++ = *curr;
@@ -19,15 +19,43 @@ void replace(char *a, char *b)
 		curr++;	
 	}
 }
+#endif
 
+void replace(char *s, int truelen)
+{
+
+	int index = 0;
+	int spacecnt = 0;
+	
+	for (int i = 0; i < truelen; i++) {
+		if (s[i] == ' ')  {
+			spacecnt++;
+		}
+	}
+
+	index = truelen + spacecnt*2; 
+	printf("%d \n", index);
+	
+	for(int i = truelen; i >= 0; i--) {
+		if (s[i] == ' ') {
+			s[index - 2] = '%';
+			s[index - 1] = '2';
+			s[index] = '0';	
+			index = index - 3;
+		} else {
+			s[index] = s[i];
+			index--;
+		}
+	}
+
+}
 int main(void)
 {
 #if 1
-	char a[30] = "mr mohn Smith";
-	char b[40] = {};
+	char a[30] = "Mr John Smith";
 	printf("a %s \n", a);
-	replace(a, b); 
-	printf("b %s \n", b);
+	replace(a, strlen(a)); 
+	printf("a %s \n", a);
 #else 
 	char a[20] = "hello";
 	printf("%s \n", a);
