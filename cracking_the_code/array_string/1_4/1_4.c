@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#if 0
 void show(int *hash)
 {
 	for (size_t i = 0; i < 26; i++)
@@ -28,7 +29,7 @@ int isPermutationPalindrome(char *s)
 			continue;
 		} 
 	}
-	
+
 	if (diff > 1)
 		bpp = 0;
 	//! time O(N)
@@ -66,15 +67,44 @@ int checkPalindrome(char *s)
 	}
 	return bPalindrome;
 }
+#endif
+typedef struct hashtable {
+	int cnt;
+} hashtable;
+
+int isPermutationPalindrome(char *s)
+{
+	int index = 0;
+	int len = 0;
+	int evencnt = 0;
+	int oddcnt = 0;
+	hashtable hash[26];
+	memset(hash, 0, sizeof(hashtable)*26);
+
+	len = strlen(s);
+	for(int i = 0; i < len; i++) {
+		index = s[i] - 'a';
+		hash[index].cnt++;
+	}
+
+	for (int i = 0; i < 26; i++) {
+		if (hash[i].cnt % 2 == 0)
+			evencnt++;
+		else 
+			oddcnt++;
+	}
+
+	if (oddcnt == 1 || oddcnt == 0)
+		return 1;
+	else 
+		return 0;
+}
 
 int main(void)
 {
 	//! assume all lower case
 	//! assume no space
 	char a[100] = "tactcoa";
-       
-      	printf("len %d \n", checklen(a));
-	printf("palindrome %d \n", checkPalindrome("madam"));
 	if (isPermutationPalindrome(a)) {
 		printf("yes permute palin\n");
 	} else {
