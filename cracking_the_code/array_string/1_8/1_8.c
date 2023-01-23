@@ -41,15 +41,50 @@ void zero_matrix(int *a, int row, int column)
 	}
 }
 
+void setZeroes(int matrix[][4], int matrixSize, int* matrixColSize)
+{
+    int row[matrixSize];
+    int col[*matrixColSize];
+    memset(row, 1, sizeof(int)*matrixSize);
+    memset(col, 1, sizeof(int)* (*matrixColSize));
+
+    for (int i = 0; i < matrixSize; i++) {
+        for (int j = 0; j < *matrixColSize; j++) {
+            if (matrix[i][j] == 0) {
+                if (row[i])
+                    row[i] = 0;
+                if (col[j]) 
+                    col[j] = 0;
+            }
+        }
+    }
+
+    for (int i = 0; i < matrixSize; i++) {
+        for (int j = 0; j < *matrixColSize; j++) {
+            if (row[i] == 0 || col[j] == 0)
+                matrix[i][j] = 0;
+        }
+    } 
+}
+
 //! time O(M*N) space O(M+N) 
 int main(void)
 {
+#if 0
 	int a[3][4] = {{1, 0, 3, 4}, {5, 5, 0, 8}, 
 			{9, 10, 11, 12}};	
 	int row = sizeof(a)/sizeof(a[0]);
 	int column = sizeof(a[0])/sizeof(int);
 	show(a[0], row, column);
 	zero_matrix(a[0], row, column);	
+#endif
+	int a[3][4] = {{0,1,2,0}, {3,4,5,2}, 
+			{1,3,1,5}};	
+	int row = sizeof(a)/sizeof(a[0]);
+	int column = sizeof(a[0])/sizeof(int);
+	show(a[0], row, column);
+	//zero_matrix(a[0], row, column);	
+	setZeroes(a, row, &column);
 	printf("\n");
 	show(a[0], row, column);
 	return 0;
