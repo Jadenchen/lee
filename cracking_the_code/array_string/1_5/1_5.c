@@ -1,63 +1,39 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-int isReplace(char *fir, char *sec)
+bool isOneEditDistance(char * s, char * t)
 {
-	int diff = 0;
-	int bReplace = 1;
-	int len = strlen(fir);
-	for (size_t i = 0; i < len; i++) {
-		if (fir[i] != sec[i]) {
-			diff++;
-			if (diff > 1) {
-				bReplace = 0;
-				break;
-			}
-		} 
-	}
+    int lens = strlen(s);
+    int lent = strlen(t);
+    int cnt = 0;
+    if (lent == 0 && lens == 0)
+        return false;
+    
+    if (lens == lent) {
+        int cnt = 0;
+        for (int i = 0; i < lens; i++) {
+            if(s[i] != t[i])
+                cnt++;
+        }
+        return cnt == 1;
+    } else if (abs(lens - lent) == 1) {
+        int cnt = 0;
+        int llen = lens > lent ? lens : lent;
+        int slen = lens > lent ? lent : lens;
+        char *scur = lens > lent ? t : s;
+        char *lcur = lens > lent ? s : t;
+        int index = 0;
+        for (int i = 0; i < llen; i++) {
+            if (scur[cnt] == lcur[i]) {
+                cnt++;
+            }  
+        }
+        return cnt == slen;
+    } else 
+        return false;
 
-	return bReplace;
-}
-//! index diff
-int isInsert(char *fir, char *sec)
-{	
-	int bInsert = 1;
-	int len_fir = strlen(fir);
-	int len_sec = strlen(sec);
-	int index_fir = 0;
-	int index_sec = 0;
-
-	while(index_fir < len_fir && index_sec < len_sec) {
-		if (fir[index_fir] != sec[index_sec]) {
-			if (index_fir != index_sec) {
-				bInsert = 0;
-				break;
-			}
-			index_sec++;
-		} else {
-			index_fir++;
-			index_sec++;
-		}
-	}	
-	return bInsert;
-}
-
-int isOneEdit(char *first, char *second)
-{
-	int len_fir = strlen(first);
-	int len_sec = strlen(second);
-	if (len_fir == len_sec) {
-		//! replace
-		return isReplace(first, second);
-	} else if ((len_fir + 1) ==  len_sec) {
-		//! insert
-		return isInsert(first, second);
-	} else if ((len_fir - 1) == len_sec) { 
-		//! remove
-		return isInsert(second, first);
-	}
-
-	return 0;
 }
 
 int main(void)
@@ -67,9 +43,9 @@ int main(void)
 	//! insert 
 	//! remove
 	//! replace 
-	if (isOneEdit(a, b)) 
+	if (isOneEditDistance(a, b)) 
 		printf("yes one edit\n");
 	else 
-		printf("no one edit\n");
+		printf("No\n");
 	return 0;
 }
