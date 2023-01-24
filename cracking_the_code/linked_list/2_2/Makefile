@@ -1,7 +1,7 @@
 CC := gcc
 EXE := test
 CTAG := -g
-MAIN := 1_1.o
+MAIN := 2_2.o
 OBJ := $(MAIN) $(SRC)
 
 all:$(OBJ)
