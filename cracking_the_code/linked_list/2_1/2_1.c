@@ -68,8 +68,69 @@ list * deleteDuplicates(list* head)
 	return head;
 }
 
+list* deleteDuplicates2(list* head)
+{
+#if 0
+	list *cur = NULL;
+	list *remove = NULL;
+	list *next = NULL;
+	list *prev = NULL;
+	int isdup = 0;
+	if (!head || !head->next)
+		return head;
+	
+	cur = head;
+	while(cur) {
+		next = cur->next;
+		while(next && cur->val == next->val) {
+			remove = next;
+			cur->next = remove->next;
+			next = remove->next;
+			remove->next = NULL;
+			isdup = 1;
+		}
+
+		if (isdup) {
+			if (prev) {
+				remove = cur;
+				prev->next = remove->next;
+				cur = remove->next;
+				remove->next = NULL;
+			} else {
+				remove = cur;
+				cur = remove->next;
+				head = cur;
+				remove->next = NULL;
+			}
+			isdup = 0;
+		} else {
+			prev = cur;
+			cur = next;	
+		}
+	}
+	
+	return head;
+#endif
+	list **indir = &head;
+	if (!head || !head->next)
+		return head;
+
+	while(*indir) {
+		if ((*indir)->next && (*indir)->val == (*indir)->next->val) {
+			list *tmp = (*indir)->next;
+			while(tmp && tmp->val == (*indir)->val) 
+				tmp = tmp->next;
+			*indir = tmp;
+		} else {
+			indir = &(*indir)->next;
+		}
+	}
+	return head;
+}
+
 int main(void)
 {
+#if 0
 	int a[3] = {1, 1, 2};
 	int len = sizeof(a)/sizeof(int);
 	list *head = NULL;
@@ -79,6 +140,17 @@ int main(void)
 
 	show(head);
 	head = deleteDuplicates(head);
+	show(head);
+#endif
+	int a[] = {1, 2, 3, 3, 4, 4, 5};
+	int len = sizeof(a)/sizeof(int);
+	list *head = NULL;
+	for (int i = 0; i < len; i++) {
+		init_list(&head, a[i]);
+	}	
+
+	show(head);
+	head = deleteDuplicates2(head);
 	show(head);
 	return 0;
 }
