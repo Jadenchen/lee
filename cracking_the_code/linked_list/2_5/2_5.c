@@ -91,6 +91,71 @@ list *addtwonumbers(list *l1, list *l2)
 	return new;
 }
 
+list *addtwonumbers2(list *l1, list *l2)
+{
+	list *new_head = NULL;
+	list **indir = &new_head;
+	list *new = NULL;
+	int val = 0;
+
+	int over = 0;
+
+	while(l1 && l2) {
+		if (over) {
+			val = l1->val + l2->val + over;
+			over = 0;
+		} else {
+			val = l1->val + l2->val;
+		}
+		if (val >= 10) {
+			over = 1;
+			val = val % 10;
+		}
+		new = new_node(val);
+		*indir = new;
+		indir = &(*indir)->next;
+		l1 = l1->next;
+		l2 = l2->next;
+	}
+
+	while(l1) {
+		val = l1->val + over;
+		if (val >= 10) {
+			over = 1;
+			val = val % 10;
+		} else {
+			over = 0;
+		}
+		new = new_node(val);
+		l1 = l1->next;
+		*indir = new;
+		indir = &(*indir)->next;
+	}
+
+	while(l2) {
+		val = l2->val + over;
+		if (val >= 10) {
+			over = 1;
+			val = val % 10;
+		} else {
+			over = 0;
+		}
+		new = new_node(val);
+		l2 = l2->next;
+		*indir = new;
+		indir = &(*indir)->next;
+	}
+
+	if (over) {
+		new = new_node(over);
+		*indir = new;
+		over = 0;
+		indir = &(*indir)->next;
+	}
+
+	return new_head;
+}
+
 int main(void)
 {
 	int a[] = {9,9,9,9,9,9,9};
@@ -104,10 +169,11 @@ int main(void)
 
 	for (size_t i = 0; i < 4; i++)
 		init_list(&l2, b[i]);
-	
+
 	show(l1);
 	show(l2);
-	new = addtwonumbers(l1, l2);
+	//new = addtwonumbers(l1, l2);
+	new = addtwonumbers2(l1, l2);
 	show(new);
 	return 0;
 }
