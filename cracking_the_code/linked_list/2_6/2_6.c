@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 typedef struct list {
 	int val;
@@ -104,6 +106,55 @@ int isPali(list *head)
 	return bPa;
 }
 
+list *reverse(list *head)
+{
+	list *prev = NULL;
+	list *cur = head;
+	list *next = NULL;
+	while(cur) {
+		next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
+	}
+	
+	head = prev;
+	return head;
+}
+
+bool isPalindrome(list* head)
+{
+	int len = 0;
+	int index = 0;
+	bool isPal = true;
+	list *cur = NULL;
+	if (!head || !head->next)
+		return true;
+	len = getlen(head);
+	int tmp[len];
+	memset(tmp, 0, sizeof(int)*len);
+	cur = head;	
+	while(cur) {
+		tmp[index++] = cur->val;
+		cur = cur->next;
+	}
+
+	head = reverse(head);
+	show(head);
+	//! cmp
+	cur = head;
+	index = 0;
+	while(cur) {
+		if (tmp[index] != cur->val) {
+			isPal = false;
+			break;
+		}
+		cur = cur->next;
+		index++;
+	}
+	return isPal;
+}
+
 int main(void)
 {
 	//int a[] = {1,1,2,1};
@@ -115,11 +166,8 @@ int main(void)
 	show(head);
 
 	//! find mid
-	if (isPali(head)) {
-		printf("yes it is\n");
-	} else 
-		printf("no it is not\n");
-
+//	printf("is palindrome %d \n", isPali(head));
+	printf("is palindrome %d \n", isPalindrome(head));
 	return 0;
 }
 
