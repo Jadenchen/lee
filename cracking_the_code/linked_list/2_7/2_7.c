@@ -50,6 +50,28 @@ list *findinter(list *headA, list *headB)
 	}
 	return find;
 }
+
+list *getIntersectionNode(list *headA, list *headB)
+{
+    list **indirA = &headA;
+    list **indirB = NULL;
+    list *inter = NULL;
+    while(*indirA) {
+        indirB = &headB;
+        while(*indirB) {
+                if (*indirA == *indirB) {
+                    inter = *indirA;
+                    break;
+                }
+            indirB = &(*indirB)->next;
+        }
+
+        indirA = &(*indirA)->next;
+        if (inter)
+            break;
+    }
+    return inter;
+}
 //! time O(max(lenA, lenB), space O(1)
 //! leetcode 160
 int main(void)
