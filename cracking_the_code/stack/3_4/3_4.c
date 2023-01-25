@@ -22,21 +22,21 @@ void release_queue(queue *new)
 		free(new);
 }
 
-void pushA(queue *new, int data)
+static void pushA(queue *new, int data)
 {
 	if (new->topA == N)
 		return;
 	new->dataA[new->topA++] = data;
 }
 
-void pushB(queue *new, int data)
+static void pushB(queue *new, int data)
 {
 	if (new->topB == N)
 		return;
 	new->dataB[new->topB++] = data;
 }
 
-int popA(queue *new)
+static int popA(queue *new)
 {
 	int data = 0;
 	if (new->topA == 0)
@@ -46,7 +46,7 @@ int popA(queue *new)
 	return data;
 }
 
-int popB(queue *new)
+static int popB(queue *new)
 {
 	int data = 0;
 	if (new->topB == 0)
