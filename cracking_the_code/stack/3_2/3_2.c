@@ -4,7 +4,7 @@
 typedef struct stack {
 	int data[N];
 	int top;
-	int min_data[N];
+	int min[N];
 	int min_top;
 } stack;
 
@@ -13,10 +13,11 @@ void pop(stack *ps, int *data)
 {
 	if (ps->top == 0)
 		return;
-	ps->top--;	
-	*data = ps->data[ps->top];
-	ps->min_top--;
-	ps->min_data[ps->min_top] = 65536;
+	*data = ps->data[ps->top - 1];
+	ps->top--;
+	if (*data == ps->min[ps->min_top - 1]) {
+		ps->min_top--;
+	}
 }
 
 //! push 
@@ -25,15 +26,9 @@ void push(stack *ps, int data)
 	if (ps->top == N)
 		return;
 	ps->data[ps->top++] = data;
-	
-	if (!ps->min_top) {
-		ps->min_data[ps->min_top++] = data;
-	} else {
-		int min_data = ps->min_data[ps->min_top - 1];
-		min_data = min_data > data ? data : min_data;
-		ps->min_data[ps->min_top++] = min_data;
+	if (ps->min == 0 || data <= ps->min[ps->min_top - 1]) {
+		ps->min[ps->min_top++] = data;
 	}
-
 }
 
 //! min
@@ -41,19 +36,13 @@ int getmin(stack *ps)
 {
 	if (ps->top == 0)
 		return 65536;
-	int index = ps->min_top;
-	index--;
-	return ps->min_data[index];
+	return ps->min[ps->min_top - 1];
 }
 
 //! top
 int gettop(stack *ps)
 {
-	if (ps->top == 0)
-		return 65536;
-	int index = ps->top;
-	index--;
-	return ps->data[index];
+	return ps->data[ps->top-1];
 }
 
 stack *init_stack(void)
@@ -71,7 +60,7 @@ void release_stack(stack *new)
 void check_min(stack *new)
 {
 	for (size_t i = 0; i < new->min_top; i++) 
-		printf("%d ", new->min_data[i]);
+		printf("%d ", new->min[i]);
 	printf("\n");
 }
 
