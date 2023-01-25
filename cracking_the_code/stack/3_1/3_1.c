@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define N (3)
+#define SIZE (10)
+#if 0
 typedef struct stack {
 	int *data;
 	int top;
@@ -94,25 +96,84 @@ void show_array(int *arr, int len)
 		printf("%d ", arr[i]);
 	printf("\n");
 }
+#endif
+//! using one array into two stack 
+typedef struct stack {
+	int top1;
+	int top2;
+	int size;
+	int *data;
+}stack;
+
+void push(stack *s, int val)
+{
+	int n = s->size/2;
+	if (s->top1 < n) {
+		s->data[s->top1] = val;
+		s->top1++;
+	} else {
+		s->data[s->top2] = val;
+		s->top2++;
+	}
+}
+
+int pop(stack *s)
+{
+	int n = s->size/2;
+	int data = 0;
+	if (s->top2 > n) {
+		data = s->data[s->top2 - 1];
+		s->top2--;
+	} else {
+		data = s->data[s->top1 - 1];
+		s->top1--;
+	}
+	return data;
+}
+
+int peek(stack *s)
+{
+	if (s->top2 > s->size/2) 
+		return s->data[s->top2 - 1];
+	else 
+		return s->data[s->top1 - 1];
+}
+
+int isEmpty(stack *s)
+{
+	return s->top1 == 0;
+}
+
+stack *init_stack(int n)
+{
+	stack *new = calloc(1, sizeof(stack));
+	new->size = n;
+	new->top1 = 0;
+	new->top2 = n/2;
+	new->data = calloc(n, sizeof(int));
+	return new;
+}
+
+void release_stack(stack *s)
+{
+	if (s)
+		free(s);
+}
 
 int main(void)
 {
-	int a[N] = {0};
-	int data = 0;
-	array_stack *new = init_arrstack();
-	push_arr(new, 0);
-	push_arr(new, 1);
-	push_arr(new, 3);
-	show_array(new->data, new->size);
-	pop_arr(new, &data);
-	printf("data %d \n", data);	
-	pop_arr(new, &data);
-	printf("data %d \n", data);	
-	pop_arr(new, &data);
-	printf("data %d \n", data);	
-	release_arrstack(new);
-	//! stack 1 [0, 1)
-	//! stack 2 [1, 2)
-	//! stack 3 [2, 3)	
+	int a[] = {1, 2, 3, 4 ,5 ,6, 7};
+	int len = sizeof(a)/sizeof(int);
+	stack *s = init_stack(10);
+	for (int i = 0; i < len; i++) {
+		printf("%d ", a[i]);
+		push(s, a[i]);
+	}
+	printf("\n");
+	for (int i = 0; i < len; i++) 
+		printf("%d ", pop(s));
+	printf("\n");
+
+	release_stack(s);
 	return 0 ;
 }
