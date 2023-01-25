@@ -18,7 +18,7 @@ int pop(stack *ps)
 //! push 
 void push(stack *ps, int data)
 {
-	if (ps->top == N)
+	if (ps->top + 1 == N)
 		return;
 	ps->data[ps->top++] = data;
 }
@@ -28,9 +28,7 @@ int peek(stack *ps)
 {
 	if (ps->top == 0)
 		return 65536;
-	int index = ps->top;
-	index--;
-	return ps->data[index];
+	return ps->data[ps->top - 1];
 }
 
 //! 
@@ -51,36 +49,40 @@ void release_stack(stack *new)
 		free(new);
 }
 
-void sortstack(stack *new, stack *replace)
+void sortstack2(stack *new, stack *replace)
 {
 	while(!isEmpty(new)) {
 		int tmp = pop(new);
 		while(!isEmpty(replace) && peek(replace) > tmp) {
 			push(new, pop(replace));
 		}
-		push(replace, tmp); 
+
+		push(replace, tmp);
 	}
 
-	while(!isEmpty(replace)) {
+	while(!isEmpty(replace)) 
 		push(new, pop(replace));
-	}
 }
 //! time O(N^2) space O(N)
 int main(void)
 {
-	int a[] = {1, 2, 3, 4};
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
+	int size = sizeof(a)/sizeof(int);
 	stack *new = init_stack();
 	stack *tmp = init_stack();
 	int data = 0;
-	push(new, a[0]);
-	push(new, a[1]);
-	push(new, a[2]);
-	push(new, a[3]);
-	sortstack(new, tmp);
-	printf("data %d\n", pop(new));
-	printf("data %d\n", pop(new));
-	printf("data %d\n", pop(new));
-	printf("data %d\n", pop(new));
+	for (int i = 0; i < size; i++) {
+		printf("%d ", a[i]);
+		push(new, a[i]);
+	}
+	printf("\n");
+	
+	sortstack2(new, tmp);
+	for (int i = 0; i < size; i++) {
+		printf("%d ", pop(new));
+	}
+	printf("\n");
 	release_stack(new);
+	release_stack(tmp);
 	return 0;
 }
