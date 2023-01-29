@@ -14,25 +14,38 @@ int frac(int n)
 		return 1;
 	return n * frac(n - 1);
 }
+//! wrong answer
+#if 0
 int trailingZeroes(int n)
 {
 	int val = frac(n);
 	int cnt = 0;
-	while(val) {
-		if (val % 10 == 0) {
-			cnt++;
-			val = val/10;
-		} else {
-			break;
-		}
+	while(val %10 == 0) {
+		cnt++;
+		val = val/10;
 	}
 
+	return cnt;
+}
+#endif
+
+int trailingZeroes(int n)
+{
+	int cnt = 0;
+	int tmp = 0;
+	for (int i = 5; i <= n; i = i + 5) {
+		tmp = i;
+		while(tmp/5) {
+			cnt++;
+			tmp = tmp/5;
+		}
+	}
 	return cnt;
 }
 
 int main(void)
 {
-	int n = 5;
+	int n = 7;
 	printf(" trailing zeros %d \n", trailingZeroes(n));
 	return 0;
 }
