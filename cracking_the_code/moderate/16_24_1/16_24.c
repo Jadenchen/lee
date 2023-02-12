@@ -4,17 +4,16 @@
 #include <stdint.h>
 #include <string.h>
 #define ERROR (65536)
-#define SIZE (1000)
 #define addr2uint(x) ((uint64_t)(void *)(x))
 #define uint2addr(x) ((void *)(uint64_t)(x))
 
+#if 0
 typedef struct hashtable {
 	int index;
 	int val;
 	struct hashtable *next;
 } hashtable;
 
-#if 0
 int* twoSum(int* nums, int numsSize, int target, int* returnSize)
 {
 	int left = 0;
@@ -38,6 +37,7 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize)
 	return res;
 }
 #endif
+#if 0
 void add(hashtable **hash, int val, int index)
 {
 	int bucket = abs(val) % SIZE;
@@ -93,6 +93,87 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize)
 	}
 
 	return NULL;	
+}
+#endif
+
+#define SIZE (239)
+#define MAP(val) abs(val % SIZE)
+
+typedef struct hashtable {
+        int val;
+        int index;
+        struct hashtable *next;
+} hashtable;
+hashtable *new_node(int val, int index)
+{
+        hashtable *new = calloc(1, sizeof(hashtable));
+        new->val = val;
+        new->index = index;
+        new->next = NULL;
+        return new;
+}
+
+
+void add_hash(int val, int index, hashtable *hash)
+{
+    int id = MAP(val);
+    hashtable *new = new_node(val, index);
+    hashtable *cur = &hash[id];
+    while(cur->next) {
+        cur = cur->next;
+    }
+    cur->next = new;
+}
+
+void init_hash(hashtable *hash)
+{
+    for (int i = 0; i < SIZE; i++) {
+        hash[i].index = -1;
+        hash[i].val = 0;
+        hash[i].next = NULL;
+    }
+}
+
+int hash_contain(int val, int *index, hashtable *hash)
+{
+    int id = MAP(val);
+    int find = 0;
+    struct hashtable *cur = &hash[id];
+    while(cur) {
+        if (cur->val == val && cur->index != -1) {
+            *index = cur->index;
+            find = 1;
+            break;
+        }
+        cur = cur->next;
+    }
+
+    return find;
+}
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize)
+{
+        int remain = 0;
+        int index = 0;
+        int *res = NULL;
+        int hashlen = 0;
+        hashtable hash[SIZE];
+        *returnSize = 2;
+
+        res = calloc(2, sizeof(int));
+        init_hash(hash);
+        for (int i = 0; i < numsSize; i++) {
+                remain = target - nums[i];
+                if (hash_contain(remain, &index, hash)) {
+                        res[0] = i;
+                        res[1] = index;
+                        break;
+                } else {
+                    add_hash(nums[i], i, hash);
+                }
+        }
+
+        return res;
 }
 
 int main(void)
