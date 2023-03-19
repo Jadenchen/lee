@@ -2,8 +2,9 @@ CC := gcc
 EXE := test
 CTAG := -g -w
 SRC := tree.o
-MAIN := 226.o
-OBJ := $(MAIN) $(SRC)
+MAIN_226 := 226.o
+MAIN_110 := 110.o
+OBJ := $(MAIN_110) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)
