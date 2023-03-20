@@ -144,3 +144,35 @@ void bfs_traversal(TreeNode *head)
 	}
 	printf("\n");
 }
+
+static int check_bal(TreeNode *cur) 
+{
+	int lh = getheight(cur->left);
+	int rh = getheight(cur->right);
+	int dif = abs(lh - rh);
+	return dif >= 2;
+}
+
+int balance_tree(TreeNode *head)
+{
+	int balance = 1;
+	stack s;
+	if (!head)
+		return 1;
+	init_stack(&s);
+	push_stack(&s, (void *)head);
+	while(!empty_stack(&s)) {
+		TreeNode *cur = pop_stack(&s);	
+		if (check_bal(cur)) {
+			balance = 0;
+			break;
+		}
+
+		if (cur->right)
+			push_stack(&s, cur->right);
+		if (cur->left)
+			push_stack(&s, cur->left);
+	}
+	release_stack(&s);
+	return balance;	
+}

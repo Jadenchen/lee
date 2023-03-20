@@ -27,4 +27,6 @@ void dfs_traversal(TreeNode *head);
 
 //! bfs traversal
 void bfs_traversal(TreeNode *head);
+
+int balance_tree(TreeNode *head);
 #endif
