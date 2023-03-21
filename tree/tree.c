@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "tree.h"
 #include "queue.h"
 #include "stack.h"
@@ -232,4 +233,58 @@ int max_depth_tree(TreeNode *head)
 	int left_depth = max_depth_tree(head->left);
 	int right_depth = max_depth_tree(head->right);
 	return left_depth > right_depth ? left_depth + 1 : right_depth + 1;
+}
+
+
+int symmetric_rec_tree(TreeNode *head)
+{
+	
+	
+
+}
+
+int symmetric_ite_tree(TreeNode *head)
+{
+	//!   1
+	//!  2 2
+	//!3 4 4 3
+	bool symmetric = true;
+	bool rchild = false;
+	bool lchild = false;
+	if (!head)
+		return symmetric;
+	queue q;
+	init_queue(&q);
+	push_queue(&q, (void *)head->left);
+	push_queue(&q, (void *)head->right);
+
+	while(!empty_queue(&q)) {
+		TreeNode *curl = (TreeNode *) pop_queue(&q);
+		TreeNode *curr = (TreeNode *) pop_queue(&q);
+	
+		if (curl && curr) {
+			if (curl->val != curr->val) {
+				symmetric = false;
+				break;
+			}
+		} 
+
+		if (curl->left && curr->right) {
+			push_queue(&q, curl->left);
+			push_queue(&q, curr->right);
+		} else if (curl->left || curr->right) {
+				symmetric = false;
+				break;
+		}	
+		if (curl->right && curr->left) {
+			push_queue(&q, curl->right);
+			push_queue(&q, curr->left);
+		} else if (curl->right || curr->left) {
+			symmetric = false;
+			break;
+		}
+	}
+
+	release_queue(&q);
+	return symmetric;
 }

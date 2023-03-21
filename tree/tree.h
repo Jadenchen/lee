@@ -36,4 +36,8 @@ int diameter_tree(TreeNode *head);
 
 //! max depth
 int max_depth_tree(TreeNode *head);
+
+//! symmetric tree 
+int symmetric_rec_tree(TreeNode *head); 
+int symmetric_ite_tree(TreeNode *head); 
 #endif
