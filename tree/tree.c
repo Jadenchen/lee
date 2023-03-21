@@ -85,10 +85,10 @@ static void create_level_tree(TreeNode **head, int val, queue *pq)
 	} else if (cur && cur->left == NULL) {
 		cur->left = new;
 	} else if (cur && cur->right == NULL) {
-		cur->right = new;	
+		cur->right = new;
 		TreeNode *tmp = NULL;
-		tmp = pop_queue(pq); 
-	}		
+		tmp = pop_queue(pq);
+	}
 	push_queue(pq, (void *)new);
 }
 
@@ -96,7 +96,7 @@ static void create_level_tree(TreeNode **head, int val, queue *pq)
 void init_levelorder_tree(TreeNode **head, int *nums, int len)
 {
 	if (!nums || !len)
-		return; 
+		return;
 	queue q;
 	memset(&q, 0, sizeof(queue));
 	for (int i = 0; i < len; i++) {
@@ -110,7 +110,7 @@ void dfs_traversal(TreeNode *head)
 	stack s;
 	if (!head)
 		return;
-	//! init stack 
+	//! init stack
 	init_stack(&s);
 	push_stack(&s, (void *)head);
 
@@ -125,7 +125,7 @@ void dfs_traversal(TreeNode *head)
 	}
 	printf("\n");
 }
-	
+
 
 void bfs_traversal(TreeNode *head)
 {
@@ -135,7 +135,7 @@ void bfs_traversal(TreeNode *head)
 	init_queue(&q);
 	push_queue(&q, (void *)head);
 	while(!empty_queue(&q)) {
-		TreeNode *cur = (TreeNode *)pop_queue(&q);	
+		TreeNode *cur = (TreeNode *)pop_queue(&q);
 		printf("%d ", cur->val);
 		if (cur->left)
 			push_queue(&q, (void *)cur->left);
@@ -146,7 +146,7 @@ void bfs_traversal(TreeNode *head)
 	printf("\n");
 }
 
-static int check_bal(TreeNode *cur) 
+static int check_bal(TreeNode *cur)
 {
 	int lh = getheight(cur->left);
 	int rh = getheight(cur->right);
@@ -163,7 +163,7 @@ int balance_tree(TreeNode *head)
 	init_stack(&s);
 	push_stack(&s, (void *)head);
 	while(!empty_stack(&s)) {
-		TreeNode *cur = pop_stack(&s);	
+		TreeNode *cur = pop_stack(&s);
 		if (check_bal(cur)) {
 			balance = 0;
 			break;
@@ -175,12 +175,12 @@ int balance_tree(TreeNode *head)
 			push_stack(&s, cur->left);
 	}
 	release_stack(&s);
-	return balance;	
+	return balance;
 }
 
-//   1 
-//  2 3 
-// 4 5 
+//   1
+//  2 3
+// 4 5
 int getnode(TreeNode *head)
 {
 	int sum = 0;
@@ -190,22 +190,22 @@ int getnode(TreeNode *head)
 		return sum;
 
 	stack s;
-	init_stack(&s);	
+	init_stack(&s);
 	push_stack(&s, head);
 	while(!empty_stack(&s)) {
 		TreeNode *cur = pop_stack(&s);
-		
-		if (cur->right) { 
+
+		if (cur->right) {
 			push_stack(&s, cur->right);
 		}
-		
+
 		if (cur->left) {
 			push_stack(&s, cur->left);
 		}
-			
+
 	}
-			
-	return sum;	
+
+	return sum;
 }
 
 int diameter_tree(TreeNode *head)
@@ -213,10 +213,10 @@ int diameter_tree(TreeNode *head)
 	int sum = 0;
 	if (!head)
 		return sum;
-	
-	//! right long + left long 
-#if 0 
-	int right_max = getmax(head->right);	
+
+	//! right long + left long
+#if 0
+	int right_max = getmax(head->right);
 	int left_max = getmax(head->left);
 	return right_max + left_max;
 #endif
@@ -246,22 +246,18 @@ int symmetric_rec(TreeNode *left, TreeNode *right)
 	if (left->val != right->val)
 		return 0;
 
-	if (left->val == right->val)
-		return 1;
-
 	int resl = symmetric_rec(left->left, right->right);
 	int resr = symmetric_rec(left->right, right->left);
-	printf("l %d r %d \n", resl, resr);
+	//printf("l %d r %d \n", resl, resr);
 	return resl & resr;
 }
 
 int symmetric_rec_tree(TreeNode *head)
 {
-	if (!head) 
+	if (!head)
 		return 1;
 
-	int res = symmetric_rec(head->left, head->right);
-	return res;  
+	return symmetric_rec(head->left, head->right);
 }
 
 int symmetric_ite_tree(TreeNode *head)
@@ -287,7 +283,7 @@ int symmetric_ite_tree(TreeNode *head)
 				symmetric = false;
 				break;
 			}
-		} 
+		}
 
 		if (curl->left && curr->right) {
 			push_queue(&q, curl->left);
@@ -295,7 +291,7 @@ int symmetric_ite_tree(TreeNode *head)
 		} else if (curl->left || curr->right) {
 				symmetric = false;
 				break;
-		}	
+		}
 		if (curl->right && curr->left) {
 			push_queue(&q, curl->right);
 			push_queue(&q, curr->left);
