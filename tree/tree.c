@@ -176,3 +176,60 @@ int balance_tree(TreeNode *head)
 	release_stack(&s);
 	return balance;	
 }
+
+//   1 
+//  2 3 
+// 4 5 
+int getnode(TreeNode *head)
+{
+	int sum = 0;
+	int right = 0;
+	int left = 0;
+	if (!head)
+		return sum;
+
+	stack s;
+	init_stack(&s);	
+	push_stack(&s, head);
+	while(!empty_stack(&s)) {
+		TreeNode *cur = pop_stack(&s);
+		
+		if (cur->right) { 
+			push_stack(&s, cur->right);
+		}
+		
+		if (cur->left) {
+			push_stack(&s, cur->left);
+		}
+			
+	}
+			
+	return sum;	
+}
+
+int diameter_tree(TreeNode *head)
+{
+	int sum = 0;
+	if (!head)
+		return sum;
+	
+	//! right long + left long 
+#if 0 
+	int right_max = getmax(head->right);	
+	int left_max = getmax(head->left);
+	return right_max + left_max;
+#endif
+	return 0;
+}
+
+
+int max_depth_tree(TreeNode *head)
+{
+
+	if (!head)
+		return 0;
+
+	int left_depth = max_depth_tree(head->left);
+	int right_depth = max_depth_tree(head->right);
+	return left_depth > right_depth ? left_depth + 1 : right_depth + 1;
+}

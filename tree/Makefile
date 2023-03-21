@@ -4,7 +4,9 @@ CTAG := -g -w
 SRC := tree.o queue.o stack.o
 MAIN_226 := 226.o
 MAIN_110 := 110.o
-OBJ := $(MAIN_110) $(SRC)
+MAIN_543 := 543.o
+MAIN_104 := 104.o
+OBJ := $(MAIN_104) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

@@ -28,5 +28,12 @@ void dfs_traversal(TreeNode *head);
 //! bfs traversal
 void bfs_traversal(TreeNode *head);
 
+//! balance tree
 int balance_tree(TreeNode *head);
+
+//! diameter tree 
+int diameter_tree(TreeNode *head);
+
+//! max depth
+int max_depth_tree(TreeNode *head);
 #endif
