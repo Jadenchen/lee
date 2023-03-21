@@ -235,12 +235,33 @@ int max_depth_tree(TreeNode *head)
 	return left_depth > right_depth ? left_depth + 1 : right_depth + 1;
 }
 
+int symmetric_rec(TreeNode *left, TreeNode *right)
+{
+	if (left == NULL && right == NULL)
+		return 1;
+
+	if (left == NULL || right == NULL)
+		return 0;
+
+	if (left->val != right->val)
+		return 0;
+
+	if (left->val == right->val)
+		return 1;
+
+	int resl = symmetric_rec(left->left, right->right);
+	int resr = symmetric_rec(left->right, right->left);
+	printf("l %d r %d \n", resl, resr);
+	return resl & resr;
+}
 
 int symmetric_rec_tree(TreeNode *head)
 {
-	
-	
+	if (!head) 
+		return 1;
 
+	int res = symmetric_rec(head->left, head->right);
+	return res;  
 }
 
 int symmetric_ite_tree(TreeNode *head)
@@ -261,7 +282,6 @@ int symmetric_ite_tree(TreeNode *head)
 	while(!empty_queue(&q)) {
 		TreeNode *curl = (TreeNode *) pop_queue(&q);
 		TreeNode *curr = (TreeNode *) pop_queue(&q);
-	
 		if (curl && curr) {
 			if (curl->val != curr->val) {
 				symmetric = false;
