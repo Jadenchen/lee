@@ -223,10 +223,8 @@ int diameter_tree(TreeNode *head)
 	return 0;
 }
 
-
 int max_depth_tree(TreeNode *head)
 {
-
 	if (!head)
 		return 0;
 
@@ -303,4 +301,82 @@ int symmetric_ite_tree(TreeNode *head)
 
 	release_queue(&q);
 	return symmetric;
+}
+
+int check_same(TreeNode *p1, TreeNode *p2)
+{
+	if ((!p1 && p2) || (p1 && !p2)) {
+		return 0;
+	}
+	return p1->val == p2->val;
+}
+
+int is_sametree_ite(TreeNode *p, TreeNode *q)
+{
+	bool same = true;
+	if (!p && !q) 
+		return true;
+	if ((!p && q) || (p && !q))
+		return false;	
+	queue qu;
+	init_queue(&qu);
+	push_queue(&qu, (void *)p);
+	push_queue(&qu, (void *)q);
+
+	while(!empty_queue(&qu)) {
+		TreeNode *cur1 = pop_queue(&qu);
+		TreeNode *cur2 = pop_queue(&qu);
+		
+		if (!cur1 && !cur2)
+			continue;
+
+		if (!check_same(cur1, cur2)) {
+			same = false;
+			break;
+		}	
+		
+		push_queue(&qu, cur1->left);
+		push_queue(&qu, cur2->left);
+		push_queue(&qu, cur1->right);
+		push_queue(&qu, cur2->right);
+	}
+
+	release_queue(&qu);
+	return same;	
+}
+
+bool chk_sub(TreeNode *p1, TreeNode *p2)
+{
+	bool find = false;
+	queue qu;
+	init_queue(&qu);
+	push_queue(&qu, (void *)p1);
+	while(!empty_queue(&qu)) {
+		TreeNode *cur = pop_queue(&qu);
+		if (is_sametree_ite(cur, p2)) {
+			find = true;
+			break;
+		}	
+		if (cur->left) 
+			push_queue(&qu, cur->left);
+		if (cur->right)
+			push_queue(&qu, cur->right);
+	}
+	release_queue(&qu);
+	return find;
+}
+
+int is_subtree(TreeNode *p, TreeNode *q)
+{
+	if (!p && !q)
+		return true; 
+
+	if ((p && !q) || (!p && q)) 
+		return false;
+	
+	//! chk left
+	bool left = chk_sub(p->left, q);
+	//! chk right 
+	bool right = chk_sub(p->right, q);
+	return left | right;
 }

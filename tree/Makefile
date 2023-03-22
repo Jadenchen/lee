@@ -7,7 +7,8 @@ MAIN_110 := 110.o
 MAIN_543 := 543.o
 MAIN_104 := 104.o
 MAIN_101 := 101.o
-OBJ := $(MAIN_101) $(SRC)
+MAIN_572 := 572.o
+OBJ := $(MAIN_572) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

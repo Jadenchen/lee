@@ -40,4 +40,9 @@ int max_depth_tree(TreeNode *head);
 //! symmetric tree 
 int symmetric_rec_tree(TreeNode *head); 
 int symmetric_ite_tree(TreeNode *head); 
+
+//! same tree 
+int is_sametree_ite(TreeNode *p, TreeNode *q);
+//! subtree 
+int is_subtree(TreeNode *p, TreeNode *q);
 #endif
