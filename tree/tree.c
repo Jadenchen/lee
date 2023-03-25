@@ -208,19 +208,25 @@ int getnode(TreeNode *head)
 	return sum;
 }
 
+int longdis(TreeNode *head, int *pdiameter)
+{
+	if (!head)
+		return 0;
+	int left = longdis(head->left, pdiameter);
+	int right = longdis(head->right, pdiameter);
+	*pdiameter = MAX(*pdiameter, left + right);
+	return (MAX(left, right)) + 1;
+}
+
 int diameter_tree(TreeNode *head)
 {
-	int sum = 0;
+	int diameter = 0;
 	if (!head)
-		return sum;
+		return diameter;
 
-	//! right long + left long
-#if 0
-	int right_max = getmax(head->right);
-	int left_max = getmax(head->left);
-	return right_max + left_max;
-#endif
-	return 0;
+	longdis(head, &diameter);
+
+	return diameter;
 }
 
 int max_depth_tree(TreeNode *head)

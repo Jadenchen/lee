@@ -65,6 +65,16 @@ int wordPattern(char *pattern, char *s)
 	
 	memset(hash, 0, sizeof(hashtable)*26);
 	//! cal pattern size
+	
+	currs = strtok(s, " ");
+
+	while(currs != NULL) {
+		printf("currs %s\n", currs);
+		currs = strtok(NULL, " ");
+		cnt++;
+	}	
+	printf("cnt %d \n", cnt);
+#if 0 
 	while(currs[patternsize] != ' ') {
 		patternsize++; 
 	}
@@ -98,15 +108,16 @@ int wordPattern(char *pattern, char *s)
 #endif
 		cnt++;
 	}
+#endif
 	
 	return match;
 }
 
 int main(void)
 {
-	char *pattern = "abba";
+	char pattern[] = "abba";
 	//char *s = "dog cat cat dog";
-	char *s = "dog dog dog dog";
+	char s[] = "dog dog dog dog";
 	printf("match %d \n", wordPattern(pattern, s));
 	return 0;
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#if 0
 int isperm(char *a, char *b)
 {
 	int bPermute = 1;
@@ -32,6 +33,39 @@ int isperm(char *a, char *b)
 
 	return bPermute;
 }	
+#endif
+
+int isperm(char *a, char *b)
+{
+	int lena = strlen(a);
+	int lenb = strlen(b);
+	int ahash[26];
+	int bhash[26];
+	int index = 0;
+	int isperm = 1;
+
+	if (lena != lenb)
+		return 0;
+
+	memset(ahash, 0, sizeof(int)*26);
+	memset(bhash, 0, sizeof(int)*26);
+	for (int i = 0; i < lena; i++) {
+		index = a[i] - 'a';
+		ahash[index]++;
+	}	
+	for (int i = 0; i < lena; i++) {
+		index = b[i] - 'a';
+		bhash[index]++;
+	}
+
+	for (int i = 0; i < 26; i++) {
+		if (ahash[i] != ahash[i]) {
+			isperm = 0;
+			break;
+		}
+	}
+	return isperm;
+}
 
 int main(void)
 {

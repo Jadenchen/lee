@@ -5,6 +5,7 @@
 #include <string.h>
 #define ERROR (65536)
 #define STACK_SIZE (1000)
+#define SIZE (1000)
 #define addr2uint(x) ((uint64_t)(void *)(x))
 #define uint2addr(x) ((void *)(uint64_t)(x))
 
@@ -13,11 +14,29 @@ typedef struct hashtable {
 	int cnt;
 } hashtable;
 
-int cmp(const void *a, const void *b)
+int cmpfunc(const void *a, const void *b)
 {
 	return *(int *)a - *(int *)b;
 }
 
+void add(hashtable *data, int val) 
+{
+        for (int i = 0; i < SIZE; i++) {
+                if (data[i].val == val) {
+                        data[i].cnt++;
+                        break;
+                }
+
+                if (data[i].val == ERROR) {
+			printf("!!!\n");
+                        data[i].val = val;
+                        data[i].cnt++;
+                        break;
+                } 
+        }
+}
+
+#if 0
 int cmph(const void *a, const void *b)
 {
 	hashtable *pa = (hashtable *)a;
@@ -66,6 +85,36 @@ int* topKFrequent(int* nums, int numsSize, int k, int* returnSize)
 		result[i] = hash[i].val;
 	}
 	return result;
+}
+#endif
+int* topKFrequent(int* nums, int numsSize, int k, int* returnSize)
+{
+        hashtable data[SIZE];
+        int len = 0;
+        int tmp[SIZE] = {0};
+        int *res = NULL;
+        qsort(nums, numsSize, sizeof(int), cmpfunc);
+
+        memset(data, 0, sizeof(hashtable)*SIZE);
+        for (int i = 0; i < SIZE; i++) {
+                data[i].val = ERROR;
+                data[i].cnt = 0;
+        }
+
+        for (int i = 0; i < numsSize; i++) {
+                add(data, nums[i]);
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+                if (data[i].cnt >= k) {
+                        tmp[len++] = data[i].val; 
+			printf("~~~\n");
+                }
+        }
+        res = calloc(len, sizeof(int));
+	*returnSize = len;
+	memcpy(res, tmp, sizeof(int)*len);
+        return res;
 }
 
 int main(void)

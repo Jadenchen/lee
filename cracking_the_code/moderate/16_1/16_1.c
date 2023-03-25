@@ -7,11 +7,18 @@
 #define STACK_SIZE (1000)
 #define addr2uint(x) ((uint64_t)(void *)(x))
 #define uint2addr(x) ((void *)(uint64_t)(x))
-
+#if 0
 void swap(int *pa, int *pb)
 {
 	*pa = *pa ^ *pb;
 	*pb = *pb ^ *pa;
+	*pa = *pa ^ *pb;
+}
+#endif
+void swap(int *pa, int *pb)
+{
+	*pa = *pa ^ *pb;
+	*pb = *pa ^ *pb;
 	*pa = *pa ^ *pb;
 }
 

@@ -61,15 +61,28 @@ char **letterCombinations(char *digits, int *returnSize)
 
 }
 
-void combination(int len, int *digits, int *arr)
+static int a[100][3]= {0};
+void combination(int len, int *digits)
+{
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			for (int k = 0; k < 3; k++) {
+				printf("%d %d %d \n", digits[i], digits[j], digits[k]);
+			}
+		}
+	}
+}
+
+void combination_rec(int len, int *digits, int *sa)
 {
 	if (len == 3) {
-		printf("%d %d %d \n", arr[0], arr[1], arr[2]);
+		printf("%d %d %d \n", sa[len][0], sa[len][1], sa[len][2]);
 		return;
-	}	
+	}
 
-	for (int i = 0; i < len; i++) {
-		combination(i + 1, digits, arr);
+	for (int i = 0; i< 3; i++) {
+		sa[len][i] = digits[i];
+		combination_rec(len + 1, sa);
 	}
 }
 
@@ -84,8 +97,9 @@ int main(void)
 
 	return 0;
 #endif
-	int digs[3] = {1, 2, 3};
-	int tmp[3] = {0};
-	combination(3, digs, tmp);
+	int digs[3] = {4, 5, 6};
+	combination(3, digs);
+	printf("\n");
+	combination_rec(0, digits, a);
 	return 0;
 }

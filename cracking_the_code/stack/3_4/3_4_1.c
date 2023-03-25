@@ -12,7 +12,7 @@ typedef struct {
     int dataB[100];
 } MyStack;
 
-
+//! leetcode 225
 MyStack* myStackCreate() {
     MyStack* new = calloc(1, sizeof(MyStack));
     return new;
