@@ -8,7 +8,9 @@ MAIN_543 := 543.o
 MAIN_104 := 104.o
 MAIN_101 := 101.o
 MAIN_572 := 572.o
-OBJ := $(MAIN_543) $(SRC)
+MAIN_235 := 235.o
+MAIN_102 := 102.o
+OBJ := $(MAIN_102) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

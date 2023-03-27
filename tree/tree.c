@@ -386,3 +386,82 @@ int is_subtree(TreeNode *p, TreeNode *q)
 	bool right = chk_sub(p->right, q);
 	return left | right;
 }
+
+TreeNode *find_par(TreeNode *cur, TreeNode *p, TreeNode *q)
+{
+	bool find = false;
+}
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+{
+#if 0
+	TreeNode *par = NULL;
+	//! assume
+	stack s;
+	init_stack(&s);
+	push_stack(&s, (void *)root);
+	while(!empty_stack(&s)) {
+		TreeNode *cur = (TreeNode *)pop_stack(&s); 
+		if (find_par(cur, p, q)) {
+			par = cur;
+			break;	
+		}
+
+		if (cur->right) {
+			push_stack(&s, (void *)cur->right);
+		}
+		if (cur->left) {
+			push_stack(&s, (void *)cur->left);
+		}
+	}
+
+	release_stack(&s);
+	return par;
+#endif
+	//!   1
+	//   2 3 
+	// 4 5 6 7 
+}
+
+int addresult(int *result, TreeNode *root, int level, int *collen)
+{
+	if (!root)
+		return 0;
+
+	if (level == 1) {
+		result[*collen] = root->val;
+		*collen = *collen + 1;
+	} else {
+		if (root->left) {
+			addresult(result, root->left, level - 1, collen);
+		} 
+		if (root->right) {
+			addresult(result, root->right, level - 1, collen);
+		} 
+	}
+}
+
+int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes)
+{
+	int **result = NULL;
+	int height = 0;
+	if (!root) {
+		*returnSize = 0;
+		return NULL;
+	}
+
+	height = *returnSize = getheight(root);
+	*returnColumnSizes = calloc(height, sizeof(int));
+	
+	result = calloc(*returnSize, sizeof(int *)); 
+	for (int i = 0; i < *returnSize; i++) {
+		result[i] = calloc(20, sizeof(int));
+	}
+
+	for (int i = 1; i <= height;i++) {
+		int collen = 0;
+		addresult(result[i - 1], root, i, &collen); 
+		(*returnColumnSizes)[i - 1] = collen;
+	}	
+	return result;
+}
