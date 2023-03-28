@@ -387,40 +387,51 @@ int is_subtree(TreeNode *p, TreeNode *q)
 	return left | right;
 }
 
-TreeNode *find_par(TreeNode *cur, TreeNode *p, TreeNode *q)
+static TreeNode *lca(TreeNode *root, TreeNode *p, TreeNode *q)
 {
-	bool find = false;
+	TreeNode *anc = NULL;
+	if (!root)
+		return anc;
+	if (root->val > p->val && root->val > q->val) {
+		lca(root->left, p, q);
+	} else if (root->val < p->val && root->val < q->val) {
+		lca(root->right, p, q);
+	} else {
+		anc = root;
+	}
+
+	return anc;
 }
 
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
 {
-#if 0
-	TreeNode *par = NULL;
-	//! assume
+	TreeNode *anc = NULL;
+	if (!root)
+		return anc;
+	anc = lca(root, p, q);
+	return anc;
+}
+
+TreeNode* lowestCommonAncestor_ite(TreeNode* root, TreeNode* p, TreeNode* q) 
+{
+	TreeNode *anc = NULL;
 	stack s;
 	init_stack(&s);
 	push_stack(&s, (void *)root);
 	while(!empty_stack(&s)) {
-		TreeNode *cur = (TreeNode *)pop_stack(&s); 
-		if (find_par(cur, p, q)) {
-			par = cur;
-			break;	
-		}
-
-		if (cur->right) {
-			push_stack(&s, (void *)cur->right);
-		}
-		if (cur->left) {
-			push_stack(&s, (void *)cur->left);
+		TreeNode *cur = pop_stack(&s);
+		if (cur->val > p->val && cur->val > q->val) {
+			if (cur->left)
+				push_stack(&s, (void *)cur->left);
+		} else if (cur->val < p->val && cur->val < q->val) {
+		       if (cur->right) 
+			       push_stack(&s, (void *)cur->right); 
+		} else {
+			anc = cur;
+			break;
 		}
 	}
-
-	release_stack(&s);
-	return par;
-#endif
-	//!   1
-	//   2 3 
-	// 4 5 6 7 
+	return anc;
 }
 
 int addresult(int *result, TreeNode *root, int level, int *collen)

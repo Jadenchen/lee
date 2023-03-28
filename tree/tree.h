@@ -52,7 +52,10 @@ int symmetric_rec_tree(TreeNode *head);
 int symmetric_ite_tree(TreeNode *head);
 
 //!Lowest Common Ancestor of a Binary Search Tree 
- TreeNode* lowestCommonAncestor(TreeNode* root,TreeNode* p,TreeNode* q);
+TreeNode* lowestCommonAncestor(TreeNode* root,TreeNode* p,TreeNode* q);
+
+ //!Lowest Common Ancestor of a Binary Search Tree 
+TreeNode* lowestCommonAncestor_ite(TreeNode* root,TreeNode* p,TreeNode* q);
  
  //! level order 
 int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes);
