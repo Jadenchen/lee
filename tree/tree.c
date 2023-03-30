@@ -320,10 +320,10 @@ int check_same(TreeNode *p1, TreeNode *p2)
 int is_sametree_ite(TreeNode *p, TreeNode *q)
 {
 	bool same = true;
-	if (!p && !q) 
+	if (!p && !q)
 		return true;
 	if ((!p && q) || (p && !q))
-		return false;	
+		return false;
 	queue qu;
 	init_queue(&qu);
 	push_queue(&qu, (void *)p);
@@ -332,15 +332,15 @@ int is_sametree_ite(TreeNode *p, TreeNode *q)
 	while(!empty_queue(&qu)) {
 		TreeNode *cur1 = pop_queue(&qu);
 		TreeNode *cur2 = pop_queue(&qu);
-		
+
 		if (!cur1 && !cur2)
 			continue;
 
 		if (!check_same(cur1, cur2)) {
 			same = false;
 			break;
-		}	
-		
+		}
+
 		push_queue(&qu, cur1->left);
 		push_queue(&qu, cur2->left);
 		push_queue(&qu, cur1->right);
@@ -348,7 +348,7 @@ int is_sametree_ite(TreeNode *p, TreeNode *q)
 	}
 
 	release_queue(&qu);
-	return same;	
+	return same;
 }
 
 bool chk_sub(TreeNode *p1, TreeNode *p2)
@@ -362,8 +362,8 @@ bool chk_sub(TreeNode *p1, TreeNode *p2)
 		if (is_sametree_ite(cur, p2)) {
 			find = true;
 			break;
-		}	
-		if (cur->left) 
+		}
+		if (cur->left)
 			push_queue(&qu, cur->left);
 		if (cur->right)
 			push_queue(&qu, cur->right);
@@ -375,14 +375,14 @@ bool chk_sub(TreeNode *p1, TreeNode *p2)
 int is_subtree(TreeNode *p, TreeNode *q)
 {
 	if (!p && !q)
-		return true; 
+		return true;
 
-	if ((p && !q) || (!p && q)) 
+	if ((p && !q) || (!p && q))
 		return false;
-	
+
 	//! chk left
 	bool left = chk_sub(p->left, q);
-	//! chk right 
+	//! chk right
 	bool right = chk_sub(p->right, q);
 	return left | right;
 }
@@ -403,7 +403,7 @@ static TreeNode *lca(TreeNode *root, TreeNode *p, TreeNode *q)
 	return anc;
 }
 
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 {
 	TreeNode *anc = NULL;
 	if (!root)
@@ -412,7 +412,7 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 	return anc;
 }
 
-TreeNode* lowestCommonAncestor_ite(TreeNode* root, TreeNode* p, TreeNode* q) 
+TreeNode* lowestCommonAncestor_ite(TreeNode* root, TreeNode* p, TreeNode* q)
 {
 	TreeNode *anc = NULL;
 	stack s;
@@ -424,8 +424,8 @@ TreeNode* lowestCommonAncestor_ite(TreeNode* root, TreeNode* p, TreeNode* q)
 			if (cur->left)
 				push_stack(&s, (void *)cur->left);
 		} else if (cur->val < p->val && cur->val < q->val) {
-		       if (cur->right) 
-			       push_stack(&s, (void *)cur->right); 
+		       if (cur->right)
+			       push_stack(&s, (void *)cur->right);
 		} else {
 			anc = cur;
 			break;
@@ -445,10 +445,10 @@ int addresult(int *result, TreeNode *root, int level, int *collen)
 	} else {
 		if (root->left) {
 			addresult(result, root->left, level - 1, collen);
-		} 
+		}
 		if (root->right) {
 			addresult(result, root->right, level - 1, collen);
-		} 
+		}
 	}
 }
 
@@ -463,16 +463,51 @@ int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes)
 
 	height = *returnSize = getheight(root);
 	*returnColumnSizes = calloc(height, sizeof(int));
-	
-	result = calloc(*returnSize, sizeof(int *)); 
+
+	result = calloc(*returnSize, sizeof(int *));
 	for (int i = 0; i < *returnSize; i++) {
 		result[i] = calloc(20, sizeof(int));
 	}
 
 	for (int i = 1; i <= height;i++) {
 		int collen = 0;
-		addresult(result[i - 1], root, i, &collen); 
+		addresult(result[i - 1], root, i, &collen);
 		(*returnColumnSizes)[i - 1] = collen;
-	}	
+	}
 	return result;
+}
+
+void inorder(stack *s, TreeNode *root, int *len)
+{
+	if (root->left)
+		inorder(s, root->left, len);
+
+	if (root) {
+		push_stack(s, (void *)root);
+		*len = *len + 1;
+	}
+
+	if (root->right)
+		inorder(s, root->right, len);
+}
+
+bool isValidBST(TreeNode *root)
+{
+	int len = 0;
+	bool valid = true;
+	stack s;
+	memset(&s, 0, sizeof(stack));
+	inorder(&s, root, &len);
+	TreeNode *cur = (TreeNode *)pop_stack(&s);
+	int tmp = cur->val;
+	for (int i = 1; i < len; i++) {
+		cur = pop_stack(&s);
+		int cmp = cur->val;
+		if (tmp <= cmp) {
+			valid = false;
+			break;
+		}
+		tmp = cmp;
+	}
+	return valid;
 }

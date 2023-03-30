@@ -1,5 +1,6 @@
 #ifndef TREE_H
 #define TREE_H
+#include <stdbool.h>
 
 #define MAX(a, b) (a) > (b) ? (a) : (b)
 typedef struct TreeNode {
@@ -51,12 +52,14 @@ int is_subtree(TreeNode *p, TreeNode *q);
 int symmetric_rec_tree(TreeNode *head);
 int symmetric_ite_tree(TreeNode *head);
 
-//!Lowest Common Ancestor of a Binary Search Tree 
+//!Lowest Common Ancestor of a Binary Search Tree
 TreeNode* lowestCommonAncestor(TreeNode* root,TreeNode* p,TreeNode* q);
 
- //!Lowest Common Ancestor of a Binary Search Tree 
+ //!Lowest Common Ancestor of a Binary Search Tree
 TreeNode* lowestCommonAncestor_ite(TreeNode* root,TreeNode* p,TreeNode* q);
- 
- //! level order 
+
+ //! level order
 int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes);
+
+bool isValidBST(TreeNode *root);
 #endif
