@@ -62,4 +62,6 @@ TreeNode* lowestCommonAncestor_ite(TreeNode* root,TreeNode* p,TreeNode* q);
 int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes);
 
 bool isValidBST(TreeNode *root);
+
+struct TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
 #endif

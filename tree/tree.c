@@ -511,3 +511,43 @@ bool isValidBST(TreeNode *root)
 	}
 	return valid;
 }
+
+int findindex(int rootval, int *inorder, int left, int right)
+{
+	int index = 0;
+	for (int i = left; i <= right; i++) {
+		if (rootval == inorder[i]) {
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+struct TreeNode *build(int *pre, int *inorder, int left, int right, int *index)
+{
+	struct TreeNode *root = NULL;
+	int orderindex = 0;
+	if (left > right)
+		return root;
+
+	root = create_node(pre[*index]);
+	*index = *index + 1;
+	//printf ("index %d \n", *index);
+	if (left == right)
+		return root;
+
+
+	orderindex = findindex(root->val, inorder, left, right);
+
+	printf ("index %d  orderindex %d  root val %d  \n", *index, orderindex, root->val);
+	root->left = build(pre, inorder, left, orderindex - 1, index);
+	root->right = build(pre, inorder, orderindex + 1, right, index);
+}
+
+struct TreeNode *buildTree(int *pre, int presize, int *inorder, int insize)
+{
+	int index = 0;
+	//printf("presize %d insize %d \n", presize, insize);
+	return build(pre, inorder, 0, presize - 1, &index);
+}
