@@ -524,14 +524,14 @@ int findindex(int rootval, int *inorder, int left, int right)
 	return index;
 }
 
-struct TreeNode *build(int *pre, int *inorder, int left, int right, int *index)
+TreeNode *build(int *preorder, int *inorder, int left, int right, int *index)
 {
-	struct TreeNode *root = NULL;
+	TreeNode *root = NULL;
 	int orderindex = 0;
 	if (left > right)
 		return root;
 
-	root = create_node(pre[*index]);
+	root = create_node(preorder[*index]);
 	*index = *index + 1;
 	//printf ("index %d \n", *index);
 	if (left == right)
@@ -539,15 +539,15 @@ struct TreeNode *build(int *pre, int *inorder, int left, int right, int *index)
 
 
 	orderindex = findindex(root->val, inorder, left, right);
-
-	printf ("index %d  orderindex %d  root val %d  \n", *index, orderindex, root->val);
-	root->left = build(pre, inorder, left, orderindex - 1, index);
-	root->right = build(pre, inorder, orderindex + 1, right, index);
+	//printf ("index %d  orderindex %d  root val %d  \n", 
+//			*index, orderindex, root->val);
+	root->left = build(preorder, inorder, left, orderindex - 1, index);
+	root->right = build(preorder, inorder, orderindex + 1, right, index);
 }
 
-struct TreeNode *buildTree(int *pre, int presize, int *inorder, int insize)
+TreeNode *buildTree(int *preorder, int presize, int *inorder, int insize)
 {
 	int index = 0;
 	//printf("presize %d insize %d \n", presize, insize);
-	return build(pre, inorder, 0, presize - 1, &index);
+	return build(preorder, inorder, 0, presize - 1, &index);
 }

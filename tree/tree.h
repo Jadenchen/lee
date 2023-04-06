@@ -63,5 +63,5 @@ int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes);
 
 bool isValidBST(TreeNode *root);
 
-struct TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
+TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
 #endif
