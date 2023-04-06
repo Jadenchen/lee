@@ -1,6 +1,6 @@
 CC := gcc
 EXE := test
-CTAG := -g -w
+CTAG := -g -Wall
 SRC := tree.o queue.o stack.o
 MAIN_226 := 226.o
 MAIN_110 := 110.o

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "tree.h"
 #include "queue.h"
 #include "stack.h"
@@ -86,8 +87,8 @@ static void create_level_tree(TreeNode **head, int val, queue *pq)
 		cur->left = new;
 	} else if (cur && cur->right == NULL) {
 		cur->right = new;
-		TreeNode *tmp = NULL;
-		tmp = pop_queue(pq);
+		//TreeNode *tmp = NULL;
+		//tmp = pop_queue(pq);
 	}
 	push_queue(pq, (void *)new);
 }
@@ -184,8 +185,6 @@ int balance_tree(TreeNode *head)
 int getnode(TreeNode *head)
 {
 	int sum = 0;
-	int right = 0;
-	int left = 0;
 	if (!head)
 		return sum;
 
@@ -270,8 +269,6 @@ int symmetric_ite_tree(TreeNode *head)
 	//!  2 2
 	//!3 4 4 3
 	bool symmetric = true;
-	bool rchild = false;
-	bool lchild = false;
 	if (!head)
 		return symmetric;
 	queue q;
@@ -434,10 +431,10 @@ TreeNode* lowestCommonAncestor_ite(TreeNode* root, TreeNode* p, TreeNode* q)
 	return anc;
 }
 
-int addresult(int *result, TreeNode *root, int level, int *collen)
+void addresult(int *result, TreeNode *root, int level, int *collen)
 {
 	if (!root)
-		return 0;
+		return;
 
 	if (level == 1) {
 		result[*collen] = root->val;
@@ -539,10 +536,11 @@ TreeNode *build(int *preorder, int *inorder, int left, int right, int *index)
 
 
 	orderindex = findindex(root->val, inorder, left, right);
-	//printf ("index %d  orderindex %d  root val %d  \n", 
+	//printf ("index %d  orderindex %d  root val %d  \n",
 //			*index, orderindex, root->val);
 	root->left = build(preorder, inorder, left, orderindex - 1, index);
 	root->right = build(preorder, inorder, orderindex + 1, right, index);
+	return root;
 }
 
 TreeNode *buildTree(int *preorder, int presize, int *inorder, int insize)
