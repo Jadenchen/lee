@@ -64,4 +64,6 @@ int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes);
 bool isValidBST(TreeNode *root);
 
 TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
+
+int kthSmallest(TreeNode* root, int k);
 #endif

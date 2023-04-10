@@ -549,3 +549,27 @@ TreeNode *buildTree(int *preorder, int presize, int *inorder, int insize)
 	//printf("presize %d insize %d \n", presize, insize);
 	return build(preorder, inorder, 0, presize - 1, &index);
 }
+
+static void getkthsmall(TreeNode *root, int k, int *a)
+{
+	static int cnt = 0;
+
+	if (!root)
+		return;
+	if (root->left)
+		getkthsmall(root->left, k, a);
+	a[cnt] = root->val;
+	cnt++;
+	if (root->right)
+		getkthsmall(root->right, k, a);
+}
+
+int kthSmallest(TreeNode *root, int k)
+{
+	int arr[1000] = {0};
+	getkthsmall(root, k, arr);
+	for (int i = 0; i < 20; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+	return arr[k - 1];
+}
