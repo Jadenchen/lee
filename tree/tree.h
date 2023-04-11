@@ -66,4 +66,7 @@ bool isValidBST(TreeNode *root);
 TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
 
 int kthSmallest(TreeNode* root, int k);
+//! right side view
+int* rightSideView(struct TreeNode* root, int* returnSize);
+
 #endif

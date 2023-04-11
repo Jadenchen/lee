@@ -573,3 +573,8 @@ int kthSmallest(TreeNode *root, int k)
 	printf("\n");
 	return arr[k - 1];
 }
+
+int* rightSideView(struct TreeNode* root, int* returnSize)
+{
+
+}
