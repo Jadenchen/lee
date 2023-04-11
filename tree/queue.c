@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <stdint.h>
 
 #include "queue.h"
@@ -20,7 +21,7 @@ void push_queue(queue *q, void *data)
 	int index = 0;
 	if (!q)
 		return;
-	index = q->front;	
+	index = q->front;
 	q->front = (index + 1)%QUEUE_SIZE;
 	q->data[index] = addr2uint(data);
 }

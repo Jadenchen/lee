@@ -574,7 +574,46 @@ int kthSmallest(TreeNode *root, int k)
 	return arr[k - 1];
 }
 
-int* rightSideView(struct TreeNode* root, int* returnSize)
+static void getresult(TreeNode *root, int *a, int level, int *cnt)
 {
+	if (!root || level == 0)
+		return;
 
+	if (level == 1) {
+		a[*cnt] = root->val;
+		*cnt = *cnt + 1;
+	} else {
+		if (root->left)
+			getresult(root->left, a, level - 1, cnt);
+		if (root->right)
+			getresult(root->right, a, level - 1, cnt);
+	}
+}
+
+int* rightSideView(TreeNode* root, int* returnSize)
+{
+	int *result = NULL;
+	int arr[100][100];
+	int colum[100] = {0};
+	if (!root) {
+		*returnSize = 0;
+		return NULL;
+	}
+
+	*returnSize = getheight(root);
+	printf("height %d \n", *returnSize);
+	result = calloc(*returnSize, sizeof(int));
+	for (int i = 0; i < *returnSize; i++)
+		memset(arr[i], 0, sizeof(int)*100);
+
+	for (int i = 1; i <= *returnSize; i++) {
+		int len = 0;
+		getresult(root, arr[i-1], i, &len);
+		colum[i - 1] = len;
+	}
+
+	for (int i = 0; i < *returnSize; i++) {
+		result[i] = arr[i][colum[i] - 1];
+	}
+	return result;
 }
