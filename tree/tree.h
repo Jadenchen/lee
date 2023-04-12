@@ -69,4 +69,6 @@ int kthSmallest(TreeNode* root, int k);
 //! right side view
 int* rightSideView(TreeNode* root, int* returnSize);
 
+//! cnt good nodes
+int goodNodes(TreeNode* root);
 #endif

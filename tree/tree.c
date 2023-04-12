@@ -617,3 +617,32 @@ int* rightSideView(TreeNode* root, int* returnSize)
 	}
 	return result;
 }
+
+static void getgood(TreeNode *root, int *cnt)
+{
+	queue q;
+	init_queue(&q);
+	int cmp = root->val;
+	push_queue(&q, (void *)root);
+	while(!empty_queue(&q)) {
+		TreeNode *cur = (TreeNode *)pop_queue(&q);
+		if (cmp >= cur->val) {
+			*cnt = *cnt + 1;
+		}
+		if (cur->left)
+			push_queue(&q, (void *)cur->left);
+
+		if (cur->right)
+			push_queue(&q, (void *)cur->right);
+	}
+
+}
+
+int goodNodes(TreeNode* root)
+{
+	int cnt = 0;
+	if (!root)
+		return cnt;
+	getgood(root, &cnt);
+	return cnt;
+}
