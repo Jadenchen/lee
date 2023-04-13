@@ -6,6 +6,7 @@
 #include "tree.h"
 #include "queue.h"
 #include "stack.h"
+#include "stackad.h"
 
 void release_tree(struct TreeNode *head)
 {
@@ -619,36 +620,45 @@ int* rightSideView(TreeNode* root, int* returnSize)
 	return result;
 }
 
-
 static void getgood(TreeNode *root, int *cnt)
 {
-#if 0
-	queue q;
-	init_queue(&q);
-	int cmp = root->val;
-	push_queue(&q, (void *)root);
-	while(!empty_queue(&q)) {
-		TreeNode *cur = (TreeNode *)pop_queue(&q);
-		if (cmp <= cur->val) {
+	stackad s;
+	stack_info s_info;
+	stack_info *ptcur_info;
+	init_stackad(&s);
+	s_info.data = addr2uint(root);
+	s_info.val = root->val;
+	push_stackad(&s, &s_info);
+	while(!empty_stackad(&s)) {
+		ptcur_info = pop_stackad(&s);	
+		TreeNode *cur_node = uint2addr(ptcur_info->data);
+		int min_val = ptcur_info->val;
+		printf("mi %d val %d \n", min_val, cur_node->val);
+		if (min_val >= cur_node->val) {
+			min_val = cur_node->val;
 			*cnt = *cnt + 1;
 		}
-		if (cur->left)
-			push_queue(&q, (void *)cur->left);
-
-		if (cur->right)
-			push_queue(&q, (void *)cur->right);
+		if (cur_node->right) {
+			s_info.data = addr2uint(cur_node->right);
+			s_info.val = min_val;
+			push_stackad(&s, &s_info);
+		}
+		if (cur_node->left) {
+			s_info.data = addr2uint(cur_node->left);
+			s_info.val = min_val;
+			push_stackad(&s, &s_info);
+		}
 	}
-#endif
-	int min = root->val;
-	int left = getchildgood(root->left, min);
-	int right = getchildgood(root->right, min);
-	*cnt = left + right + 1;
+
+	release_stackad(&s);
 }
 
 int goodNodes(TreeNode* root)
 {
+	//!   3 /3
+	//!  3 /3 
+	//! 4 /3 2  /3
 	int cnt = 0;
-	printf("0x%x \n", min);
 	if (!root)
 		return cnt;
 	getgood(root, &cnt);

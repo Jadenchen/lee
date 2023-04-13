@@ -1,7 +1,7 @@
 CC := gcc
 EXE := test
 CTAG := -g -Wall
-SRC := tree.o queue.o stack.o
+SRC := tree.o queue.o stack.o stackad.o
 MAIN_226 := 226.o
 MAIN_110 := 110.o
 MAIN_543 := 543.o
