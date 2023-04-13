@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <limits.h>
 #include "tree.h"
 #include "queue.h"
 #include "stack.h"
@@ -618,15 +619,17 @@ int* rightSideView(TreeNode* root, int* returnSize)
 	return result;
 }
 
+
 static void getgood(TreeNode *root, int *cnt)
 {
+#if 0
 	queue q;
 	init_queue(&q);
 	int cmp = root->val;
 	push_queue(&q, (void *)root);
 	while(!empty_queue(&q)) {
 		TreeNode *cur = (TreeNode *)pop_queue(&q);
-		if (cmp >= cur->val) {
+		if (cmp <= cur->val) {
 			*cnt = *cnt + 1;
 		}
 		if (cur->left)
@@ -635,12 +638,17 @@ static void getgood(TreeNode *root, int *cnt)
 		if (cur->right)
 			push_queue(&q, (void *)cur->right);
 	}
-
+#endif
+	int min = root->val;
+	int left = getchildgood(root->left, min);
+	int right = getchildgood(root->right, min);
+	*cnt = left + right + 1;
 }
 
 int goodNodes(TreeNode* root)
 {
 	int cnt = 0;
+	printf("0x%x \n", min);
 	if (!root)
 		return cnt;
 	getgood(root, &cnt);
