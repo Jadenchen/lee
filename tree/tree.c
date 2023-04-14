@@ -633,8 +633,8 @@ static void getgood(TreeNode *root, int *cnt)
 		ptcur_info = pop_stackad(&s);	
 		TreeNode *cur_node = uint2addr(ptcur_info->data);
 		int min_val = ptcur_info->val;
-		printf("mi %d val %d \n", min_val, cur_node->val);
-		if (min_val >= cur_node->val) {
+		//printf("mi %d val %d \n", min_val, cur_node->val);
+		if (min_val <= cur_node->val) {
 			min_val = cur_node->val;
 			*cnt = *cnt + 1;
 		}

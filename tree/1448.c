@@ -4,10 +4,26 @@
 
 int main(void)
 {
+#if 0
+	//!  3
+	//! 3 
+	//!4 2
 	TreeNode *root = create_node(3);
 	root->left = create_node(3);
 	root->left->left = create_node(4);
 	root->left->right = create_node(2);
+#else
+	//! 2
+	//!   4 
+	//!  10 8 
+	//!    4
+
+	TreeNode *root = create_node(2);
+	root->right = create_node(4);
+	root->right->left = create_node(10);
+	root->right->right = create_node(8);
+	root->right->right->left = create_node(4);
+#endif
 	show_tree(root);
 	printf("good nodes %d \n", goodNodes(root)); 
 	printf("\n");
