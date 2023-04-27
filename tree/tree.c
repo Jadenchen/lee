@@ -476,7 +476,7 @@ int** levelOrder(TreeNode* root, int* returnSize, int** returnColumnSizes)
 	return result;
 }
 
-void inorder(stack *s, TreeNode *root, int *len)
+static void inorder(stack *s, TreeNode *root, int *len)
 {
 	if (root->left)
 		inorder(s, root->left, len);
@@ -663,4 +663,119 @@ int goodNodes(TreeNode* root)
 		return cnt;
 	getgood(root, &cnt);
 	return cnt;
+}
+
+static void inorder_save_node(stack *s, TreeNode *root, int *len)
+{
+	if (!root)
+		return;
+	inorder_save_node(s, root->left, len);
+	if (root) {
+		push_stack(s, root);
+		*len = *len + 1;
+	}
+	inorder_save_node(s, root->right, len);
+}
+
+int *inorder_save(TreeNode *root, int *returnSize)
+{
+	stack s;
+	int node_size = 0;
+	int *result = NULL;
+	if (!root) {
+		*returnSize = node_size;
+		return result;
+	}
+
+	init_stack(&s);
+	inorder_save_node(&s, root, &node_size);
+	*returnSize = node_size;
+	result = calloc(node_size, sizeof(int)); 
+	for (int i = 0; i < node_size; i++) {
+		TreeNode *cur = pop_stack(&s);
+		result[node_size - 1 - i] = cur->val; 
+	}
+	release_stack(&s);
+	return result;
+}
+
+static void preorder_save_node(stack *s, TreeNode *root, int *len)
+{
+	if (!root)
+		return;
+	push_stack(s, root);
+	*len = *len + 1;
+	preorder_save_node(s, root->left, len);
+	preorder_save_node(s, root->right, len);
+}
+
+int *preorder_save(TreeNode *root, int *returnSize)
+{
+	stack s;
+	int node_size = 0;
+	int *result = NULL;
+	if (!root) {
+		*returnSize = node_size;
+		return result;
+	}
+
+	init_stack(&s);
+	preorder_save_node(&s, root, &node_size);
+	*returnSize = node_size;
+	result = calloc(node_size, sizeof(int)); 
+	for (int i = 0; i < node_size; i++) {
+		TreeNode *cur = pop_stack(&s);
+		result[node_size - 1 - i] = cur->val; 
+	}
+	release_stack(&s);
+	return result;
+}
+
+static void postorder_save_node(stack *s, TreeNode *root, int *len)
+{
+	if (!root)
+		return;
+	postorder_save_node(s, root->left, len);
+	postorder_save_node(s, root->right, len);
+	push_stack(s, root);
+	*len = *len + 1;
+}
+
+int *postorder_save(TreeNode *root, int *returnSize)
+{
+	stack s;
+	int node_size = 0;
+	int *result = NULL;
+	if (!root) {
+		*returnSize = node_size;
+		return result;
+	}
+
+	init_stack(&s);
+	postorder_save_node(&s, root, &node_size);
+	*returnSize = node_size;
+	result = calloc(node_size, sizeof(int)); 
+	for (int i = 0; i < node_size; i++) {
+		TreeNode *cur = pop_stack(&s);
+		result[node_size - 1 - i] = cur->val; 
+	}
+	release_stack(&s);
+	return result;
+}
+
+TreeNode *inverttree(TreeNode *root)
+{
+	//!     2          2
+	//!    1 3 ->     3 1 
+	//!  4 5 7 8    5 4 8 7
+	//!
+	if (!root)
+		return NULL;
+
+
+
+
+	
+
+
 }

@@ -15,7 +15,11 @@ MAIN_98 := 98.o
 MAIN_230 := 230.o
 MAIN_199 := 199.o
 MAIN_1448 := 1448.o
-OBJ := $(MAIN_1448) $(SRC)
+MAIN_inorder := 123_inorder.o
+MAIN_preorder := 123_preorder.o
+MAIN_postorder := 123_postorder.o
+MAIN_invert := 123_invert.o
+OBJ := $(MAIN_invert) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

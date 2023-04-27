@@ -68,7 +68,14 @@ TreeNode *buildTree(int *pre, int presize, int *inorder, int insize);
 int kthSmallest(TreeNode* root, int k);
 //! right side view
 int* rightSideView(TreeNode* root, int* returnSize);
-
 //! cnt good nodes
 int goodNodes(TreeNode* root);
+//! inorder save
+int *inorder_save(TreeNode *root, int *returnSize);
+//! preorder save
+int *preorder_save(TreeNode *root, int *returnSize);
+//! postorder save
+int *postorder_save(TreeNode *root, int *returnSize);
+//! invert tree 
+TreeNode *inverttree(TreeNode *root);
 #endif
