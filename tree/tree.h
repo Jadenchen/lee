@@ -78,4 +78,6 @@ int *preorder_save(TreeNode *root, int *returnSize);
 int *postorder_save(TreeNode *root, int *returnSize);
 //! invert tree 
 TreeNode *inverttree(TreeNode *root);
+//! merge tree 
+TreeNode *merge_twotree(TreeNode *root1, TreeNode *root2);
 #endif

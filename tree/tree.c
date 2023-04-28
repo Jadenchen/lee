@@ -226,7 +226,6 @@ int diameter_tree(TreeNode *head)
 		return diameter;
 
 	longdis(head, &diameter);
-
 	return diameter;
 }
 
@@ -763,19 +762,80 @@ int *postorder_save(TreeNode *root, int *returnSize)
 	return result;
 }
 
+static void swap(TreeNode *root)
+{
+	TreeNode *tmp = NULL;
+
+	if (root->right)
+		tmp = root->right;
+	root->right = root->left;
+	root->left = tmp;
+}
+
 TreeNode *inverttree(TreeNode *root)
 {
 	//!     2          2
 	//!    1 3 ->     3 1 
 	//!  4 5 7 8    5 4 8 7
 	//!
+	queue q;
+	
 	if (!root)
 		return NULL;
+	init_queue(&q);
+	push_queue(&q, (void *)root);
+	while(!empty_queue(&q)) {
+		TreeNode *cur = pop_queue(&q);
+		if (cur->left)
+			push_queue(&q, (void *)cur->left);
+		if (cur->right)
+			push_queue(&q, (void *)cur->right);
+		swap(cur);
+	}
 
+	return root;
+}
 
+static void create_tree(TreeNode **root, TreeNode *cur1, TreeNode *cur2)
+{
 
+}
 
-	
+TreeNode *merge_func(TreeNode *root1, TreeNode *root2)
+{
+	queue q1;
+	queue q2;
+	TreeNode *merge = NULL;
+#if 0
+	init_queue(&q1);
+	init_queue(&q2);
+	while(!empty_queue(&q1) || !empty_queue(&q2)) {
+		TreeNode *cur1 = pop_queue(&q1);
+		TreeNode *cur2 = pop_queue(&q2); 
+		create_tree(&merge, cur1, cur2);
+		if (cur1->left)
+			push_queue(&q1, (void *)cur1->left);
+		if (cur2->left)
+			push_queue(&q2, (void *)cur2->left);
+		if (cur1->right)
+			push_queue(&q1, (void *)cur1->right);
+		if (cur2->right)
+			push_queue(&q2, (void *)cur2->right);
 
+	}
+#endif
+	return merge;
+}
 
+TreeNode *merge_twotree(TreeNode *root1, TreeNode *root2)
+{
+	TreeNode *merge = NULL;
+	if (!root1 && !root2)
+		return NULL;
+	if (!root1)
+		return root2;
+	if (!root2)
+		return root1;
+	merge = merge_func(root1, root2);
+	return merge;
 }
