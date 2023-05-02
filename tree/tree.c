@@ -239,6 +239,30 @@ int max_depth_tree(TreeNode *head)
 	return left_depth > right_depth ? left_depth + 1 : right_depth + 1;
 }
 
+int max_depth_tree_ite(TreeNode *head)
+{
+	int height = 0;
+	queue q;
+	if (!head)
+		return height;
+
+	init_queue(&q);
+	height++;
+	push_queue(&q, head);
+	while(!empty_queue(&q)) {
+		TreeNode *cur = pop_queue(&q);
+		if (cur->left || cur->right) {
+			height++;
+			if (cur->left) 
+				push_queue(&q, cur->left);
+			if (cur->right)
+				push_queue(&q, cur->right);
+		}
+	}
+
+	return height;
+}
+
 int symmetric_rec(TreeNode *left, TreeNode *right)
 {
 	if (left == NULL && right == NULL)
@@ -803,10 +827,11 @@ static void create_tree(TreeNode **root, TreeNode *cur1, TreeNode *cur2)
 
 TreeNode *merge_func(TreeNode *root1, TreeNode *root2)
 {
-	queue q1;
-	queue q2;
+
 	TreeNode *merge = NULL;
 #if 0
+	queue q1;
+	queue q2;
 	init_queue(&q1);
 	init_queue(&q2);
 	while(!empty_queue(&q1) || !empty_queue(&q2)) {

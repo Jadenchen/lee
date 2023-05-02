@@ -5,7 +5,9 @@
 int main(void)
 {
 	int nums[] = {3,9,20,15,7};
-	int len = sizeof(nums)/sizeof(nums[0]);
+	//! 3
+	//! 9 20
+	//!   15 7 
 	TreeNode *head = NULL;
 	head = create_node(nums[0]);
 	head->left = create_node(nums[1]);
@@ -16,6 +18,7 @@ int main(void)
 	head->right->right = create_node(nums[4]);
 	show_tree(head);
 	printf("max depth %d \n", max_depth_tree(head));
+	printf("max depth iterative %d \n", max_depth_tree_ite(head));
 	release_tree(head);
 	return 0;
 }

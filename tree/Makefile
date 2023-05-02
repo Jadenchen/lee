@@ -19,7 +19,7 @@ MAIN_inorder := 123_inorder.o
 MAIN_preorder := 123_preorder.o
 MAIN_postorder := 123_postorder.o
 MAIN_invert := 123_invert.o
-OBJ := $(MAIN_invert) $(SRC)
+OBJ := $(MAIN_104) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)
