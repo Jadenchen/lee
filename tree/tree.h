@@ -36,6 +36,7 @@ int balance_tree(TreeNode *head);
 
 //! diameter tree
 int diameter_tree(TreeNode *head);
+int diameter_tree_ite(TreeNode *head);
 
 //! max depth
 int max_depth_tree(TreeNode *head);

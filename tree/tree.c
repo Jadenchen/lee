@@ -209,14 +209,18 @@ int getnode(TreeNode *head)
 	return sum;
 }
 
-int longdis(TreeNode *head, int *pdiameter)
+static void longdis(TreeNode *head, int *pdiameter)
 {
 	if (!head)
-		return 0;
-	int left = longdis(head->left, pdiameter);
-	int right = longdis(head->right, pdiameter);
-	*pdiameter = MAX(*pdiameter, left + right);
-	return (MAX(left, right)) + 1;
+		return;
+	int left = 0;
+	int right = 0;
+	longdis(head->left, &left);
+	longdis(head->right, &right);
+	*pdiameter = MAX(left, right);
+	//*pdiameter = MAX(*pdiameter, left + right);
+	//return (MAX(left, right)) + 1;
+	*pdiameter = MAX(1 + left + right, *pdiameter);
 }
 
 int diameter_tree(TreeNode *head)
@@ -226,6 +230,40 @@ int diameter_tree(TreeNode *head)
 		return diameter;
 
 	longdis(head, &diameter);
+	return diameter;
+}
+
+static int get_dia(TreeNode *root)
+{
+	int height = 0;
+	queue q;
+	if (!root)
+		return height;
+	
+	init_queue(&q);
+	height++;
+	push_queue(&q, root);
+	while(!empty_queue(&q)) {
+		TreeNode *cur = pop_queue(&q);
+		if (cur->left || cur->right) {
+			height++;
+			if (cur->left)
+				push_queue(&q, cur->left);
+			if (cur->right)
+				push_queue(&q, cur->right);
+		}
+	}
+	return height;
+}
+
+int diameter_tree_ite(TreeNode *root)
+{
+	int diameter = 0;
+	if (!root)
+		return diameter;
+	int left = get_dia(root->left);
+	int right = get_dia(root->right);
+	diameter = left + right + 1;
 	return diameter;
 }
 

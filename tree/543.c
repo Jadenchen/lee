@@ -5,7 +5,9 @@
 int main(void)
 {
 	int nums[] = {1, 2, 3, 4, 5};
-	int len = sizeof(nums)/sizeof(nums[0]);
+	//!   1
+	//!  2 3
+	//! 4 5
 	TreeNode *head = NULL;
 	head = create_node(nums[0]);
 	head->left = create_node(nums[1]);
@@ -14,6 +16,7 @@ int main(void)
 	head->left->right = create_node(nums[4]);
 	show_tree(head);
 	printf("dimeter tree num %d \n", diameter_tree(head));
+	printf("dimeter tree iterative num %d \n", diameter_tree_ite(head));
 	release_tree(head);
 	return 0;
 }
