@@ -39,3 +39,25 @@ void insert_sort(int *pa, int len)
 		pa[j+1] = val;
 	}
 }
+//! shell sort
+//! time 
+//! space O(1)
+void shell_sort(int *pa, int len)
+{
+	int gap = 0;
+	int j;
+	if (check(pa))
+		return;
+
+	gap = len/2;
+	for (; gap > 0; gap = gap>>1) {
+		for (int i = gap; i < len; i++) {
+			int tmp = pa[i];
+			for (j = i; j >= gap && (pa[j - gap] > tmp); j = j - gap) {
+				pa[j] = pa[j - gap];
+			}
+
+			pa[j] = tmp;
+		}
+	}
+}
