@@ -23,6 +23,6 @@ int main(void)
 #endif
 	shell_sort(a, len);
 	printf("sortting\n");
-//	show_array(a, len);
+	show_array(a, len);
 	return 0;
 }

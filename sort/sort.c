@@ -61,3 +61,25 @@ void shell_sort(int *pa, int len)
 		}
 	}
 }
+
+//! time  O(n^2)
+//! space O(1)
+void select_sort(int *pa, int len)
+{
+	int i, j;
+	for (i = 0; i < len - 1; i++) {
+		int min = i;
+		//! find min
+		for (j = i+1; j < len; j++) {
+			if (pa[j] < pa[min]) {
+				min = j;
+			}	
+		}
+		if (min != i) {
+			//! swap
+			int tmp = pa[min];
+			pa[min] = pa[i];
+			pa[i] = tmp;
+		}
+	}
+}

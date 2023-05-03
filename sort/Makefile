@@ -4,7 +4,8 @@ CTAG := -g -Wall
 SRC := sort.o
 MAIN_INSERT := main_insert.o
 MAIN_SHELL := main_shell.o
-OBJ := $(MAIN_SHELL) $(SRC)
+MAIN_SELECT := main_select.o
+OBJ := $(MAIN_SELECT) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)
