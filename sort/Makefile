@@ -5,7 +5,8 @@ SRC := sort.o
 MAIN_INSERT := main_insert.o
 MAIN_SHELL := main_shell.o
 MAIN_SELECT := main_select.o
-OBJ := $(MAIN_SELECT) $(SRC)
+MAIN_BUBBLE := main_bubble.o
+OBJ := $(MAIN_BUBBLE) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

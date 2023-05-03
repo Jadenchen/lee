@@ -67,6 +67,9 @@ void shell_sort(int *pa, int len)
 void select_sort(int *pa, int len)
 {
 	int i, j;
+	if (check(pa))
+		return;
+
 	for (i = 0; i < len - 1; i++) {
 		int min = i;
 		//! find min
@@ -80,6 +83,23 @@ void select_sort(int *pa, int len)
 			int tmp = pa[min];
 			pa[min] = pa[i];
 			pa[i] = tmp;
+		}
+	}
+}
+
+void bubble_sort(int *pa, int len)
+{
+	int i, j;
+	if (check(pa))
+		return;
+
+	for (i = 0; i < (len - 1); i++) {
+		for (j = 0; j < (len - 1 - i); j++) {
+			if (pa[j+1] < pa[j]) {
+				int tmp = pa[j];
+				pa[j] = pa[j+1];
+				pa[j+1] = tmp;
+			}
 		}
 	}
 }
