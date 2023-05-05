@@ -6,7 +6,8 @@ MAIN_INSERT := main_insert.o
 MAIN_SHELL := main_shell.o
 MAIN_SELECT := main_select.o
 MAIN_BUBBLE := main_bubble.o
-OBJ := $(MAIN_BUBBLE) $(SRC)
+MAIN_SHAKE_SORT := main_shaker_sort.o
+OBJ := $(MAIN_SHAKE_SORT) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)

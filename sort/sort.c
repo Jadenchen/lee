@@ -21,6 +21,13 @@ void show_array(int *pa, int len)
 	printf("\n");
 }
 
+static void swap(int *pa, int *pb)
+{
+	int tmp = *pa;
+	*pa = *pb;
+	*pb = tmp;
+}
+
 //! insert sort
 //! time O(n^2)
 //! space O(n)
@@ -40,7 +47,7 @@ void insert_sort(int *pa, int len)
 	}
 }
 //! shell sort
-//! time 
+//! time
 //! space O(1)
 void shell_sort(int *pa, int len)
 {
@@ -76,7 +83,7 @@ void select_sort(int *pa, int len)
 		for (j = i+1; j < len; j++) {
 			if (pa[j] < pa[min]) {
 				min = j;
-			}	
+			}
 		}
 		if (min != i) {
 			//! swap
@@ -96,10 +103,55 @@ void bubble_sort(int *pa, int len)
 	for (i = 0; i < (len - 1); i++) {
 		for (j = 0; j < (len - 1 - i); j++) {
 			if (pa[j+1] < pa[j]) {
-				int tmp = pa[j];
-				pa[j] = pa[j+1];
-				pa[j+1] = tmp;
+				swap(&pa[j], &pa[j+1]);
 			}
 		}
 	}
+}
+
+//! shaker sort
+void shake_sort(int *pa, int len)
+{
+	int left = 0;
+	int right = len - 1;
+	int shift = 1;
+	while(left < right) {
+		for (int i = left; i < right; i++) {
+			if (pa[i] > pa[i+1]) {
+				swap(&pa[i], &pa[i+1]);
+				shift = i;
+			}
+		}
+		right = shift;
+		for (int i = right - 1; i >= left; i--) {
+			if (pa[i] > pa[i+1]) {
+				swap(&pa[i], &pa[i+1]);
+				shift = i + 1;
+			}
+		}
+		left = shift;
+	}
+}
+
+static void merge(int *pa, int left, int mid, int right)
+{
+
+
+}
+
+static void merge_sort_build(int *pa, int left, int right)
+{
+	if (left < right) {
+		int mid = left + (right - left)/2; //! could overflow
+		merge_sort_build(pa, lett, mid);
+		merge_sort_build(pa, mid+1, right);
+		merge(pa, left, mid, right);
+	}
+}
+
+void merge_sort(int *pa, int len)
+{
+	if (check(pa))
+		return;
+	merge_sort_build(pa, 0, len-1);
 }
