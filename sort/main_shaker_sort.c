@@ -22,8 +22,9 @@ int main(void)
 
 #endif
 //	shake_sort(a, len);
+	merge_sort(a, len);
 
-	printf("sortting\n");
+	printf("merge sortting\n");
 	show_array(a, len);
 	return 0;
 }

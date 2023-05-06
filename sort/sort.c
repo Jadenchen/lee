@@ -135,20 +135,48 @@ void shake_sort(int *pa, int len)
 
 static void merge(int *pa, int left, int mid, int right)
 {
+	int n1 = mid - left + 1;
+	int n2 = right - mid;
+	int a1[n1];
+	int a2[n2];
+	int idx = left;
+	int n1_idx = 0;
+	int n2_idx = 0;
 
+	for (int i = 0; i < n1; i++)
+		a1[n1_idx++] = pa[i + left];
+	for (int i = 0; i < n2; i++)
+		a2[n2_idx++] = pa[i + mid + 1];
 
+	n1_idx = 0;
+	n2_idx = 0;
+	while(n1_idx < n1 && n2_idx < n2) {
+		if (a1[n1_idx] > a2[n2_idx])
+			pa[idx++] = a2[n2_idx++];
+		 else
+			pa[idx++] = a1[n1_idx++];
+	}
+
+	while(n2_idx < n2) {
+		pa[idx++] = a2[n2_idx++];
+	}
+	while(n1_idx < n1) {
+		pa[idx++] = a1[n1_idx++];
+	}
 }
 
 static void merge_sort_build(int *pa, int left, int right)
 {
 	if (left < right) {
 		int mid = left + (right - left)/2; //! could overflow
-		merge_sort_build(pa, lett, mid);
+		merge_sort_build(pa, left, mid);
 		merge_sort_build(pa, mid+1, right);
 		merge(pa, left, mid, right);
 	}
 }
 
+//! time O(nlogn)
+//! space O(n)
 void merge_sort(int *pa, int len)
 {
 	if (check(pa))
