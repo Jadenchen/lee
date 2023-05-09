@@ -183,3 +183,32 @@ void merge_sort(int *pa, int len)
 		return;
 	merge_sort_build(pa, 0, len-1);
 }
+
+static void max_heapify(int *pa, int start, int end)
+{
+	int dad = start;
+	int son = dad*2 + 1;
+	while(son <= end) {
+		if (son + 1 <= end && pa[son] <= pa[son + 1])
+			son++;
+		if (pa[dad] > pa[son])
+			return;
+		else {
+			swap(&pa[dad], &pa[son]);
+			dad = son;
+			son = 2*dad + 1;
+		}
+	}
+}
+
+void heap_sort(int *pa, int len)
+{
+	if (check(pa)) 
+		return;
+	for (int i = len/2 - 1; i >= 0; i--) 
+		max_heapify(pa, i, len - 1);
+	for (int i = len - 1; i > 0; i--) {
+		swap(&pa[0], &pa[i]);
+		max_heapify(pa, 0, i - 1);
+	}
+}
