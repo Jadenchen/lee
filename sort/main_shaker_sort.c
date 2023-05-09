@@ -23,9 +23,10 @@ int main(void)
 #endif
 //	shake_sort(a, len);
 //	merge_sort(a, len);
-	heap_sort(a, len);
+//	heap_sort(a, len);
 
-	printf("heap sortting\n");
+	quick_sort(a, len);
+	printf("quick sortting\n");
 	show_array(a, len);
 	return 0;
 }

@@ -9,5 +9,6 @@ void shake_sort(int*pa, int len);
 void bubble_sort(int *pa, int len);
 void merge_sort(int *pa, int len);
 void heap_sort(int *pa, int len);
+void quick_sort(int *pa, int len);
 #endif
 

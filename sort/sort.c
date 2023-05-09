@@ -203,12 +203,46 @@ static void max_heapify(int *pa, int start, int end)
 
 void heap_sort(int *pa, int len)
 {
-	if (check(pa)) 
+	if (check(pa))
 		return;
-	for (int i = len/2 - 1; i >= 0; i--) 
+	//! build heap
+	for (int i = len/2 - 1; i >= 0; i--) {
 		max_heapify(pa, i, len - 1);
+	}
+	//! heap sort
 	for (int i = len - 1; i > 0; i--) {
 		swap(&pa[0], &pa[i]);
 		max_heapify(pa, 0, i - 1);
 	}
+}
+
+static int partition(int *pa, int left, int right)
+{
+	int pivotkey;
+	pivotkey = pa[left];
+	while(left < right) {
+		while(left < right && pa[right] >= pivotkey)
+			right--;
+		swap(&pa[left], &pa[right]);
+		while(left < right && pa[left] <= pivotkey)
+			left++;
+		swap(&pa[left], &pa[right]);
+	}
+	return left;
+}
+
+static void qksort(int *pa, int left, int right)
+{
+	if (left < right) {
+		int pivot = partition(pa, left, right);
+		qksort(pa, left, pivot - 1);
+		qksort(pa, pivot + 1, right);
+	}
+}
+
+void quick_sort(int *pa, int len)
+{
+	if (check(pa))
+		return;
+	qksort(pa, 0, len - 1);
 }
