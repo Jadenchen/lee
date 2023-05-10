@@ -8,7 +8,8 @@ MAIN_SELECT := main_select.o
 MAIN_BUBBLE := main_bubble.o
 MAIN_SHAKE_SORT := main_shaker_sort.o
 MAIN_88 := main_88.o
-OBJ := $(MAIN_88) $(SRC)
+MAIN_912 := main_912.o
+OBJ := $(MAIN_912) $(SRC)
 
 all:$(OBJ)
 	$(CC) $(CTAG) -o $(EXE) $(OBJ)
