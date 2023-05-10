@@ -246,3 +246,30 @@ void quick_sort(int *pa, int len)
 		return;
 	qksort(pa, 0, len - 1);
 }
+
+void merge_twolist(int *pa, int lena, int *pb, int lenb)
+{
+	if (check(pa))
+		return;
+	if (check(pb))
+		return;
+
+	int a1[lena];
+	int a2[lenb];
+	int idx1 = 0, idx2 = 0, idx = 0;
+	for (int i = 0; i < lena; i++)
+		a1[i] = pa[i];
+	for (int i = 0; i < lenb; i++)
+		a2[i] = pb[i];
+	while(idx1 < lena && idx2 < lenb) {
+		if (a1[idx1] > a2[idx2]) {
+			pa[idx++] = a2[idx2++];
+		} else {
+			pa[idx++] = a1[idx1++];
+		}
+	}
+	while(idx1 < lena) 
+		pa[idx++] = a1[idx1++];
+	while(idx2 < lenb)
+		pa[idx++] = a2[idx2++];
+}

@@ -10,5 +10,6 @@ void bubble_sort(int *pa, int len);
 void merge_sort(int *pa, int len);
 void heap_sort(int *pa, int len);
 void quick_sort(int *pa, int len);
+void merge_twolist(int *pa, int lena, int *pb, int lenb);
 #endif
 
