@@ -6,11 +6,14 @@ int main(void)
 	int len = sizeof(a)/sizeof(int);
 	int target = 74;
 	show_array(a, len);
-	printf("bin target %d search index %d \n", target, 
+	printf("bin target %d search index %d \n", target,
 			bineary_search(a, len, target));
 
-	printf("inter target %d search index %d \n", target, 
+	printf("inter target %d search index %d \n", target,
 			interpolation_search(a, len, target));
+
+	printf("golder target %d search index %d \n", target,
+			golden_search(a, len, target));
 
 	return 0;
 }
