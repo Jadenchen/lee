@@ -15,5 +15,7 @@ int main(void)
 	printf("golder target %d search index %d \n", target,
 			golden_search(a, len, target));
 
+	printf("fib search target %d search index %d \n", target,
+			fib_search(a, len, target));
 	return 0;
 }
