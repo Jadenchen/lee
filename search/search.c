@@ -115,35 +115,39 @@ static int min(int x, int y)
 
 int fib_search(int *pa, int len, int target)
 {
-	int fib2 = 0; //! m - 2 th 
-	int fib1 = 1; //! m - 1 th
-	int fib = fib2 + fib1; //! m th 
-	int offset = -1;
+	int fib1 = 0;
+	int fib2 = 1;
+	int fib = fib2 + fib1;
 
 	while(fib < len) {
-		printf("fib %d fib1 %d fib2 %d \n", fib, fib1, fib2);
-		fib2 = fib1;
-		fib1 = fib;
+		fib1 = fib2;
+		fib2 = fib;
 		fib =  fib2 + fib1;
 	}
 
-	while(fib > 1) {
-		int i = min(offset + fib2, len - 1);
-		printf("i %d fib2 %d offset %d \n\n", i, fib2, offset);
-		if (pa[i] < target) {
-			fib = fib1;
-			fib1 = fib2;
-			fib2 = fib - fib1;
-			offset = i;
-		} else if (pa[i] > target) {
-			fib = fib2;
-			fib1 = fib1 - fib2;
-			fib2 = fib - fib1;
-		} else 
-			return i;
-	}	
+	//! choose index
+	int cur = fib1 - 1;
+	cur = cur>=0 ? cur: 0;
 
-	if (fib1 && pa[offset + 1] == target)
-		return offset + 1;
+	//! target is on the right
+	if (pa[cur] < target) {
+		cur = cur + len - fib2;
+	}
+
+	while(fib > 0) {
+		if (pa[cur] == target)
+			return cur;
+		else if (pa[cur] < target) {
+			fib = fib2;
+			fib2 = fib1;
+			fib1 = fib - fib2;
+			cur = cur + fib1;
+		} else {
+			fib = fib2;
+			fib2 = fib1;
+			fib1 = fib - fib2;
+			cur = cur - fib1;
+		}
+	}
 	return -1;
 }
