@@ -3,6 +3,10 @@
 int main(void)
 {
 	int a[] = {12, 27, 35, 36, 47, 52, 54, 55, 68, 74};
+	int b[] = {12, 27, 35, 36, 47, 52, 54, 55, 68, 74, 68, 56, 42};
+	//int c[] = {18,29,38,59,98,100,99,98,90};
+	int c[] = {3,5,3,2,0};
+
 	int len = sizeof(a)/sizeof(int);
 	int target = 74;
 	show_array(a, len);
@@ -17,5 +21,7 @@ int main(void)
 
 	printf("fib search target %d search index %d \n", target,
 			fib_search(a, len, target));
+
+	printf("peak index %d \n", peakIndexInMountainArray(c, sizeof(c)/sizeof(int)));
 	return 0;
 }

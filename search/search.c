@@ -151,3 +151,26 @@ int fib_search(int *pa, int len, int target)
 	}
 	return -1;
 }
+
+int peakIndexInMountainArray(int* arr, int arrSize)
+{
+	//! find max
+	int left = 0;
+	int right = arrSize - 1;
+	int offset = 0;
+	int index = -1;
+	while(left <= right) {
+		int mid = left + (right - left)/2;
+		if (arr[mid] > arr[mid - 1] &&
+				arr[mid] > arr[mid+1]) {
+			index = mid;
+			break;
+		} else if (arr[mid] < arr[mid + 1]) {
+			left = mid + 1;
+		} else {
+			right = mid - 1;
+		}
+	}
+	return index;
+}
+
