@@ -177,3 +177,24 @@ int peakIndexInMountainArray(int* arr, int arrSize)
 	return index;
 }
 
+int searchInsert(int* nums, int numsSize, int target)
+{
+	int left = 0;
+	int right = numsSize - 1;
+	int index = -1;
+	while(right >= left) {
+		int mid = left + (right - left)/2;
+
+		if (nums[mid] == target) {
+			index = mid;
+			break;
+		} else if (nums[mid] < target) {
+			left = mid + 1;
+		} else
+			right = mid - 1;
+	}
+	if (left > right)
+		index = left;
+
+	return index;
+}

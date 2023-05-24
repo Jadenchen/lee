@@ -9,5 +9,7 @@ int fib_search(int *pa, int len, int target);
 int method_35(int *nums, int numsSize, int target);
 //! leetcode 852
 int peakIndexInMountainArray(int* arr, int arrSize);
+//! leetcode 35
+int searchInsert(int* nums, int numsSize, int target);
 #endif
 

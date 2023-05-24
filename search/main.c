@@ -7,6 +7,7 @@ int main(void)
 	//int c[] = {18,29,38,59,98,100,99,98,90};
 	//int c[] = {18,29,38,59,98,100,99,98,90};
 	int c[] = {3,5,3,2,0};
+	int d[] = {1,3,5,6};
 
 	int len = sizeof(a)/sizeof(int);
 	int target = 74;
@@ -24,5 +25,6 @@ int main(void)
 			fib_search(a, len, target));
 
 	printf("peak index %d \n", peakIndexInMountainArray(c, sizeof(c)/sizeof(int)));
+	printf("search index %d \n", searchInsert(d, sizeof(d)/sizeof(int), 5));
 	return 0;
 }
