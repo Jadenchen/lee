@@ -157,10 +157,13 @@ int peakIndexInMountainArray(int* arr, int arrSize)
 	//! find max
 	int left = 0;
 	int right = arrSize - 1;
-	int offset = 0;
 	int index = -1;
-	while(left <= right) {
+	while(right >= left) {
 		int mid = left + (right - left)/2;
+		if (mid == 0) {
+			index = 1;
+			break;
+		}
 		if (arr[mid] > arr[mid - 1] &&
 				arr[mid] > arr[mid+1]) {
 			index = mid;
