@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "divid.h"
 
 int fib_recur(int a)
@@ -21,11 +23,17 @@ int fib_dy(int n)
 	return fib[i - 1];
 }
 
-int hanoi(int n)
+int hanoi(int n, char from, char to, char others)
+
 {
-	if (n == 1)
+	if (n == 1) {
+		printf("move n %d from %c to %c \n", n, from, to);
 		return 1;
-	else {
-		return hanoi(n - 1) + 1 + hanoi(n - 1);
+	} else {
+		int step1 = hanoi(n - 1, from, to, others);
+		int step2 = 1;
+		printf("move n %d from %c to %c \n", n, from, to);
+		int step3 = hanoi(n - 1, from, to, others);
+		return step1 + step2 + step3;
 	}
 }
