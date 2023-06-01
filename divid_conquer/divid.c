@@ -20,3 +20,12 @@ int fib_dy(int n)
 	}
 	return fib[i - 1];
 }
+
+int hanoi(int n)
+{
+	if (n == 1)
+		return 1;
+	else {
+		return hanoi(n - 1) + 1 + hanoi(n - 1);
+	}
+}
