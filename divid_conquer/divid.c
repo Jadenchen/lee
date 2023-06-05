@@ -83,8 +83,40 @@ void mergesort(int *pa, int len)
 {
 	merge(pa, 0, len - 1);
 }
+static void swap(int *pa, int *pb)
+{
+	int tmp = *pa;
+	*pa = *pb;
+	*pb = tmp;
+}
+
+static int pivation(int *pa, int left, int right)
+{
+	int key = pa[left];
+	while(right > left) {
+		while(left < right && pa[right] >= key)
+			right--;
+		swap(&pa[left], &pa[right]);
+		while(left < right && pa[left] <= key)
+			left++;
+		swap(&pa[left], &pa[right]);
+	}
+	return left;
+}
+
+static void q_sort(int *pa, int left, int right)
+{
+	if (left > right)
+		return ;
+	int pivot = pivation(pa,  left, right);
+	printf("pivot %d \n", pivot);
+	q_sort(pa, left, pivot - 1);
+	q_sort(pa, pivot + 1, right);
+}
 
 void quicksort(int *pa, int len)
 {
-
+	if (!len)
+		return;
+	q_sort(pa, 0, len - 1);
 }
