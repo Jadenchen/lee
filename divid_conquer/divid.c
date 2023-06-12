@@ -26,13 +26,13 @@ int fib_dy(int n)
 int hanoi(int n, char from, char to, char others)
 {
 	if (n == 1) {
-		printf("move n %d from %c to %c \n", n, from, to);
+		//printf("move n %d from %c to %c \n", n, from, to);
 		return 1;
 	} else {
 		int step1 = hanoi(n - 1, from, others, to);
 		//! move 1 plate from A to C
 		int step2 = 1;
-		printf("move n %d from %c to %c \n", n, from, to);
+		//printf("move n %d from %c to %c \n", n, from, to);
 		int step3 = hanoi(n - 1, others, to, from);
 		return step1 + step2 + step3;
 	}
@@ -109,7 +109,7 @@ static void q_sort(int *pa, int left, int right)
 	if (left > right)
 		return ;
 	int pivot = pivation(pa,  left, right);
-	printf("pivot %d \n", pivot);
+	//printf("pivot %d \n", pivot);
 	q_sort(pa, left, pivot - 1);
 	q_sort(pa, pivot + 1, right);
 }
@@ -119,4 +119,20 @@ void quicksort(int *pa, int len)
 	if (!len)
 		return;
 	q_sort(pa, 0, len - 1);
+}
+
+int maxSubArray(int *nums, int numsSize)
+{
+	int maxsum = 0;
+	int sum = 0;
+	maxsum = nums[0];
+	for (int i = 0; i < numsSize; i++) {
+		sum = sum + nums[i];
+		if (nums[i] > sum)
+			sum = nums[i];
+		if (sum > maxsum)
+			maxsum = sum;
+	}
+
+	return maxsum;
 }
