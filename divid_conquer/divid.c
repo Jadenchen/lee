@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "divid.h"
+#define MAX(a, b) (a) > (b) ? (a) : (b)
 
 int fib_recur(int a)
 {
@@ -121,7 +122,7 @@ void quicksort(int *pa, int len)
 	q_sort(pa, 0, len - 1);
 }
 
-int maxSubArray(int *nums, int numsSize)
+int maxSubArray_dy(int *nums, int numsSize)
 {
 	int maxsum = 0;
 	int sum = 0;
@@ -136,3 +137,46 @@ int maxSubArray(int *nums, int numsSize)
 
 	return maxsum;
 }
+
+static int helper(int *nums, int left, int right)
+{
+	int sum = 0;
+	int leftsum = 0;
+	int rightsum = 0;
+	int totalsum = 0;
+	int maxleft = 0, maxright = 0;
+	if (left == right)
+		return 0;
+	int mid = left + (right - left)/2;
+	//! cal left
+	leftsum = nums[left];
+	for (int i = left; i < mid; i++) {
+		sum = sum + nums[i];
+		if (nums[i] > sum)
+			sum = nums[i];
+		if (sum > leftsum)
+			leftsum = sum;
+	}
+	sum = 0;
+	rightsum = nums[mid + 1];
+	for (int i = mid + 1; i <= right; i++) {
+		sum = sum + nums[i];
+		if (nums[i] > sum)
+			sum = nums[i];
+		if (sum > rightsum)
+			rightsum = sum;
+	}
+	totalsum = leftsum + nums[mid] + rightsum;
+	maxleft = helper(nums, left, mid);
+	maxright = helper(nums, mid + 1, right);
+
+	return MAX(totalsum, MAX(maxleft, maxright));
+}
+
+int maxSubArray_divide_conquer(int* nums, int numsSize)
+{
+	if (!numsSize)
+		return -1;
+	return	helper(nums, 0, numsSize - 1);
+}
+

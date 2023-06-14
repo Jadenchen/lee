@@ -6,6 +6,7 @@ int fib_dy(int n);
 int hanoi(int n, char from, char to, char others);
 void mergesort(int *pa, int len);
 void quicksort(int *pa, int len);
-int maxSubArray(int* nums, int numsSize);
+int maxSubArray_divide_conquer(int* nums, int numsSize);
+int maxSubArray_dy(int* nums, int numsSize);
 #endif
 

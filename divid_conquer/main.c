@@ -18,7 +18,8 @@ int main(void)
 		printf("%d ", a[i]);
 
 	printf("\n");
-	printf("max sub array %d \n", maxSubArray(b, sizeof(b)/sizeof(int)));
+	printf("max sub array dy %d \n", maxSubArray_dy(b, sizeof(b)/sizeof(int)));
+	printf("max sub array divide %d \n", maxSubArray_divide_conquer(b, sizeof(b)/sizeof(int)));
 	printf("\n");
 	return 0;
 }
