@@ -145,31 +145,26 @@ static int helper(int *nums, int left, int right)
 	int rightsum = 0;
 	int totalsum = 0;
 	int maxleft = 0, maxright = 0;
-	if (left == right)
+	if (left >= right)
 		return 0;
-	int mid = left + (right - left)/2;
+	//int mid = left + (right - left)/2;
+	int mid = (left + right)/2;
+
+	printf("left %d rihgt %d mid %d \n", left, right, mid);
 	//! cal left
-	leftsum = nums[left];
-	for (int i = left; i < mid; i++) {
-		sum = sum + nums[i];
-		if (nums[i] > sum)
-			sum = nums[i];
-		if (sum > leftsum)
-			leftsum = sum;
+	for (int i = left; i <= mid - 1; i++) {
+		sum += nums[i];
+		leftsum = MAX(sum, leftsum);
 	}
 	sum = 0;
-	rightsum = nums[mid + 1];
 	for (int i = mid + 1; i <= right; i++) {
 		sum = sum + nums[i];
-		if (nums[i] > sum)
-			sum = nums[i];
-		if (sum > rightsum)
-			rightsum = sum;
+		rightsum = MAX(rightsum, sum);
 	}
 	totalsum = leftsum + nums[mid] + rightsum;
-	maxleft = helper(nums, left, mid);
+	maxleft = helper(nums, left, mid - 1);
 	maxright = helper(nums, mid + 1, right);
-
+	printf("max left %d right %d total %d \n", maxleft, maxright, totalsum);
 	return MAX(totalsum, MAX(maxleft, maxright));
 }
 
