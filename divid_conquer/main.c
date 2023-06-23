@@ -4,7 +4,6 @@ int main(void)
 {
 	int times = 10;
 	int a[] = {19,4,5,21,19,4};
-//	int b[] = {5,4,-1,7,8};
 	int b[] = {-2,1,-3,4,-1,2,1,-5,4};
 	int len = sizeof(a)/sizeof(int);
 	printf("recursive fib %d \n", fib_recur(times));
