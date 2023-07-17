@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "divid.h"
 #define MAX(a, b) (a) > (b) ? (a) : (b)
 
@@ -175,3 +176,46 @@ int maxSubArray_divide_conquer(int* nums, int numsSize)
 	return	helper(nums, 0, numsSize - 1);
 }
 
+typedef struct {
+	int val;
+	int cnt;
+} data;
+
+void check(data *tmp, int val, int *idx)
+{
+	for (int i = 0; i < *idx; i++) {
+		if (val == tmp[i].val) {
+			tmp[i].cnt++;
+			return;
+		}
+	}
+	*idx = *idx + 1;
+	tmp[*idx - 1].val = val;
+	tmp[*idx - 1].cnt = 1;
+
+}
+
+int majorityElement(int* nums, int numsSize)
+{
+	data tmp[numsSize];
+	memset(tmp, 0, sizeof(data)*numsSize);
+	tmp[0].val = nums[0];
+	tmp[0].cnt = 1;
+	int total_idx = 1;
+	int most_cnt = 0;
+	int most_idx = 0;
+	for (int i = 1; i < numsSize; i++) {
+		check(tmp, nums[i], &total_idx);
+	}
+
+	most_cnt = tmp[0].cnt;
+	most_idx = 0;
+	for (int i = 1; i < total_idx; i++) {
+		if (tmp[i].cnt  > most_cnt) {
+			most_idx = i;
+			most_cnt = tmp[i].cnt;
+		}
+	}
+
+	return tmp[most_idx].val;
+}
