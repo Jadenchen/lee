@@ -194,9 +194,14 @@ void check(data *tmp, int val, int *idx)
 	tmp[*idx - 1].cnt = 1;
 
 }
+int cmpfunc(const void *a, const void *b)
+{
+	return *(int *)a - *(int *)b;
+}
 
 int majorityElement(int* nums, int numsSize)
 {
+#if 0
 	data tmp[numsSize];
 	memset(tmp, 0, sizeof(data)*numsSize);
 	tmp[0].val = nums[0];
@@ -218,4 +223,8 @@ int majorityElement(int* nums, int numsSize)
 	}
 
 	return tmp[most_idx].val;
+#else
+	qsort(nums, numsSize, sizeof(int), cmpfunc);
+	return nums[numsSize>>1];
+#endif
 }
