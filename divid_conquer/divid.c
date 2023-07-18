@@ -199,6 +199,34 @@ int cmpfunc(const void *a, const void *b)
 	return *(int *)a - *(int *)b;
 }
 
+static int majority(int *nums, int left, int right)
+{
+	int left_major = 0;
+	int right_major = 0;
+	int mid = 0;
+	int left_cnt = 0;
+	int right_cnt = 0;
+	int i = 0;
+	if (left == right)
+		return nums[left];
+	mid = left + ((right - left)>>1);
+	left_major = majority(nums, left, mid);
+	right_major = majority(nums, mid+1, right);
+	if (left_major == right_major)
+		return left_major;
+
+	for (i = left; i <= mid; i++) {
+		if (nums[i] == left_major)
+			left_cnt++;
+	}
+
+	for (i = mid+1; i <= right; i++) {
+		if (nums[i] == right_major)
+			right_cnt++;
+	}
+	return left_cnt > right_cnt ? left_major : right_major;
+}
+
 int majorityElement(int* nums, int numsSize)
 {
 #if 0
@@ -224,7 +252,10 @@ int majorityElement(int* nums, int numsSize)
 
 	return tmp[most_idx].val;
 #else
+#if 0
 	qsort(nums, numsSize, sizeof(int), cmpfunc);
 	return nums[numsSize>>1];
+#endif
+	return majority(nums, 0, numsSize - 1);
 #endif
 }
