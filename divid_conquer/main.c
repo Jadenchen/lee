@@ -13,6 +13,10 @@ int main(void)
 		53,53,53,53,53,50,53,53,53,23,88,3,
 		53,61,19,53,68,53,35,42,53,53,48,34,
 		54,53,75,53,53,50,44,92,41,71,53,53,82,53,53,14,53};
+	int array[][5] = {{1,4,7,11,15},{2,5,8,12,19},{3,6,9,16,22},
+		{10,13,14,17,24},{18,21,23,26,30}};
+	int matrixCol[5] = {5, 5, 5, 5, 5};
+	int target = 5;
 	int len = sizeof(a)/sizeof(int);
 	printf("recursive fib %d \n", fib_recur(times));
 	printf("dynamic programming fib %d \n", fib_dy(times));
@@ -29,6 +33,7 @@ int main(void)
 	printf("max sub array dy %d \n", maxSubArray_dy(b, sizeof(b)/sizeof(int)));
 	printf("max sub array divide %d \n", maxSubArray_divide_conquer(b, sizeof(b)/sizeof(int)));
 	printf("majoty element %d \n", majorityElement(c, sizeof(c)/sizeof(int)));
+	printf("find %d \n", searchMatrix((int *)array, 5, matrixCol, target));
 	printf("\n");
 	return 0;
 }

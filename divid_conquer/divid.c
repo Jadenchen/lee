@@ -259,3 +259,45 @@ int majorityElement(int* nums, int numsSize)
 	return majority(nums, 0, numsSize - 1);
 #endif
 }
+
+static bool search_hori(int *matrix, int left, int right, int target)
+{
+	int mid = 0;
+	bool find = 0;
+	if (left > right)
+		return false;
+	while(right >= left) {
+		mid = left + ((right - left)>>1);
+		if (matrix[mid] == target) {
+			find = 1;
+			break;
+		} else if (matrix[mid] > target) {
+			right = mid - 1;
+		} else {
+			left = mid + 1;
+		}
+	}
+	return find;
+}
+
+bool searchMatrix(int* matrix, int matrixSize, int* matrixColSize, int target)
+{
+#if 0
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixColSize[i]; j++) {
+			printf("%d ", *(matrix + i*matrixSize +j));
+		}
+		printf("\n");
+	}
+#endif
+	int find = 0;
+	for (int i = 0; i < matrixSize; i++) {
+		if (search_hori(matrix + i, 0, matrixColSize[i] - 1, target)) {
+			find = 1;
+			break;
+		}
+	}
+
+
+	return (bool)find;
+}
