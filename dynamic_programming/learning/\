@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include "comm.h"
+
+int main(void)
+{
+	for (int i = 0; i < 10; i++) {
+		printf("fib %d \n", dy_fib(3));
+		printf("fib %d \n", dy_fib(4));
+	}
+	return 0;
+}
+
