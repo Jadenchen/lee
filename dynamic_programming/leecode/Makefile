@@ -1,7 +1,8 @@
 CC := gcc
 EXE := test
 CTAG := -g -Wall
-SRC := dy_322.o
+#SRC := dy_322.o
+SRC := dy_53.o
 MAIN := main.o
 OBJ := $(MAIN) $(SRC)
 

@@ -1,4 +1,6 @@
+
 #include <limits.h>
+#include <stdio.h>
 #include "dy.h"
 #define MIN(a, b) (a) > (b) ? (b) : (a)
 #if 0
@@ -56,33 +58,36 @@ int coinexchange(int *coins, int coinsize, int amount)
 {
 	int arr[amount + 1];
 
-	for (int i = 0; i <= amount; i++)
+	arr[0] = 0;
+	for (int i = 1; i <= amount; i++)
 		arr[i] = -1;
+
 	for (int i = 1; i <= amount; i++) {
-		int min = INT_MAX;
-		int cur_now;
+		int min_max = INT_MAX;
+		int coin_now;
 		for (int j = 0; j < coinsize; j++) {
 			int cur = i - coins[j];
 			if (cur < 0)
-				cur_now = INT_MAX;
+				coin_now = INT_MAX;
 			else {
 				if (arr[cur] == -1)
-					cur_now = INT_MAX;
-				else
-					cur_now = arr[cur];
+					coin_now = INT_MAX;
+				else {
+					coin_now = arr[cur];
+				}
 			}
-			min = MIN(cur_now, min);
+			min_max = coin_now < min_max ? coin_now : min_max;
 		}
-		if (min == INT_MAX)
+
+		if (min_max == INT_MAX)
 			arr[i] = -1;
 		else
-			arr[i] = min + 1;
+			arr[i] = min_max + 1;
 	}
-	for (int i = 0; i <= amount; i++)
-			printf("%d ",arr[i]);
-
+	for (int i = 0; i < amount; i++) {
+		printf(" %d ", arr[i]);
+	}
 	printf("\n");
-
 	return arr[amount];
 }
 
