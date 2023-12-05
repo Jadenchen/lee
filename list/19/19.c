@@ -49,7 +49,7 @@ list *create_list(int *pa, int len)
 		new_node(&new, pa[i]);
 	}
 	return new;
-}	
+}
 
 static int get_len(list *head)
 {
@@ -65,7 +65,7 @@ static void list_del(list *remove, list *prev)
 {
 	list *next = remove->next;
 	if (prev)
-		prev->next = next;	
+		prev->next = next;
 	remove->next = NULL;
 }
 
@@ -86,22 +86,80 @@ static list *remove_back(list *pa, int target)
 	len = get_len(pa);
 	len = len - target;
 	if (len < 0)
-		return NULL;	
-	curr = pa;	
+		return NULL;
+	curr = pa;
 	if (len == 0) {
 		pa = curr->next;
 	} else {
 		for (size_t i = 0; i < len; i++) {
 			prev = curr;
 			curr = curr->next;
-		}	
+		}
 		list_del(curr, prev);
 	}
 	return pa;
 }
 
-int main(void) 
+int getlen(list *head)
 {
+	list *cur = head;
+	int len = 0;
+	while(cur) {
+		len++;
+		cur = cur->next;
+	}
+	return len;
+}
+
+list *reverse(list *head)
+{
+	list *cur = NULL;
+	list *prev = NULL;
+	list *next = NULL;
+	if (!head || !head->next)
+		return head;
+	cur = head;
+	while(cur) {
+		next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
+	}
+	head = prev;
+	return head;
+}
+list * removeNthFromEnd(list* head, int n)
+{
+	list **indir = NULL;
+	list *remove = NULL;
+	int idx = 1;
+	int len = 0;
+	if (!head)
+		return NULL;
+	head = reverse(head);
+	remove = head;
+	while(remove) {
+		if (idx == n)
+			break;
+		remove = remove->next;
+		idx++;
+	}
+
+	head = reverse(head);
+	indir = &head;
+	while(*indir != remove)
+		indir = &(*indir)->next;
+
+	if (remove->next)
+		*indir = remove->next;
+	else
+		*indir = NULL;
+	return head;
+}
+
+int main(void)
+{
+#if 0
 	int target = 6;
 	int num[] = {1, 2, 3, 4, 5, 6};
 	int len = sizeof(num)/sizeof(int);
@@ -112,8 +170,18 @@ int main(void)
 
 	show_list(pa);
 	printf("target %d \n", target);
-	pa = remove_back(pa, target);	
+	pa = remove_back(pa, target);
 	show_list(pa);
 	release_list(pa);
+#endif
+	int a[] = {1, 2, 3, 4, 5};
+	int n = 2;
+	int len = sizeof(a)/sizeof(int);
+	list *head = create_list(a, len);
+	show_list(head);
+	head = removeNthFromEnd(head, n);
+//	head = reverse(head);
+	show_list(head);
+	release_list(head);
 	return 0;
 }
