@@ -148,21 +148,19 @@ int hascycle(list *pa)
 	int found = 0;
 	if (!pa || !pa->next)
 		return found;
-
 	slow = pa;
-	fast = slow->next;
+	fast = pa->next;
 	while(slow && fast && fast->next) {
+		fast = fast->next;
 		if (slow == fast) {
 			found = 1;
 			break;
 		}
 		slow = slow->next;
-		fast = fast ->next->next;
+		fast = fast->next;
 	}
 	return found;
-
 }
-
 
 int main(void) 
 {
