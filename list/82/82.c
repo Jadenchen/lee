@@ -49,7 +49,7 @@ list *create_list(int *pa, int len)
 		new_node(&new, pa[i]);
 	}
 	return new;
-}	
+}
 
 static int get_len(list *head)
 {
@@ -65,7 +65,7 @@ static void list_del(list *remove, list *prev)
 {
 	list *next = remove->next;
 	if (prev)
-		prev->next = next;	
+		prev->next = next;
 	remove->next = NULL;
 }
 
@@ -86,15 +86,15 @@ static list *remove_back(list *pa, int target)
 	len = get_len(pa);
 	len = len - target;
 	if (len < 0)
-		return NULL;	
-	curr = pa;	
+		return NULL;
+	curr = pa;
 	if (len == 0) {
 		pa = curr->next;
 	} else {
 		for (size_t i = 0; i < len; i++) {
 			prev = curr;
 			curr = curr->next;
-		}	
+		}
 		list_del(curr, prev);
 	}
 	return pa;
@@ -104,30 +104,81 @@ void remove_node(list *curr, list *remove)
 {
 	list *next = remove->next;
 	curr->next = next;
-}	     
+}
 
+#if 1
 list *deleteDuplicates(list *head)
 {
-	//! use indirect pointer 
-	list **indir = &head;
+	struct list **indir = NULL;
+	struct list *next = NULL;
+	struct list *prev = NULL;
+	int bDup = 0;
+	if (!head || !head->next)
+		return head;
+	indir = &head;
+	while(*indir) {
+		if ((*indir)->next && (*indir)->val == (*indir)->next->val) {
+			struct list *next = (*indir)->next;
+			while(next && next->val == (*indir)->val)
+				next = next->next;
+			*indir = next;
+		} else {
+			indir = &(*indir)->next;
+		}
+	}
+	return head;
+}
+#else
+list* deleteDuplicates(list* head)
+{
+	list **indir = NULL;
+	list *next = NULL;
+	list *prev = NULL;
+
 	if (!head || !head->next)
 		return head;
 
+	indir = &head;
 	while(*indir) {
-		if ((*indir)->next && (*indir)->next->val == (*indir)->val) {
-			list *tmp = (*indir)->next;
-			while(tmp && tmp->val == (*indir)->val)
-				tmp = tmp->next;
-			*indir = tmp;
-		} else 
-			indir = (*indir)->next;
+		next = (*indir)->next;
+		int bdup = 0;
+		while(next && next->val == (*indir)->val) {
+			remove_node(*indir, next);
+			next = (*indir)->next;
+			bdup = 1;
+		}
+		if (bdup) {
+			if (prev) {
+				remove_node(prev, *indir);
+				indir = &prev->next;
+			} else {
+				head = (*indir)->next;
+			}
+		}  else {
+			prev = (*indir);
+			indir = &(*indir)->next;
+		}
+		bdup = 0;
+
 	}
 
 	return head;
-}	
+}
 
-int main(void) 
+
+#endif
+
+int main(void)
 {
-
+	int a[] = {1,2,3,3,4,4,5};
+	//	int a[] = {1,2,3,3};
+	int size = sizeof(a)/sizeof(int);
+	list *head = create_list(a, size);
+	show_list(head);
+	printf("del dup \n");
+	//head = deleteDuplicates(head);
+	head = deleteDuplicates(head);
+	show_list(head);
+	release_list(head);
 	return 0;
 }
