@@ -14,4 +14,4 @@ valgrind_test:
 
 .PHONY:clean
 clean:
-	rm -rf *.o $(EXE)
+	rm -rf *.o $(EXE) *.txt .gdb*

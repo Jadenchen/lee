@@ -106,10 +106,11 @@ void remove_node(list *curr, list *remove)
 	curr->next = next;
 }
 
-list *deleteDuplicates(list *head)
+list *deleteDuplicatesval(list *head, int val)
 {
 	int bDup = 0;
 	list **indir = NULL;
+	list *prev = NULL;
 	if (!head || !head->next)
 		return head;
 	indir = &head;
@@ -117,10 +118,37 @@ list *deleteDuplicates(list *head)
 		list *next = (*indir)->next;
 		while(next) {
 			prev = *indir;
-			if (next->val == (*indir)->val)
-				remove_node(prev, remove);
+			if (next->val == val)
+				remove_node(prev, next);
 			next = next->next;
 		}
+		indir = &(*indir)->next;
+	}
+
+	return head;
+}
+
+list *deleteDuplicates(list *head)
+{
+	int a[10001] = {0};
+	list **indir = NULL;
+	list *cur = head;
+	if (!head || !head->next)
+		return head;
+
+	while(cur) {
+		a[cur->val]++;
+		cur = cur->next;
+	}
+
+	indir = &head;
+	while(*indir) {
+		int val = (*indir)->val;
+		if (a[val] > 1) {
+			*indir = (*indir)->next;
+			continue;
+		}
+		indir = &(*indir)->next;
 	}
 
 	return head;
@@ -134,6 +162,7 @@ int main(void)
 	show_list(head);
 	printf("del dup \n");
 	head = deleteDuplicates(head);
+	show_list(head);
 	release_list(head);
 	return 0;
 }
