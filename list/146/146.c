@@ -7,12 +7,12 @@ typedef struct qnode {
 	struct qnode *prev;
 	struct qnode *next;
 	int key;
-	int data;
+	int val;
 } QNODE;
 
-typedef struct queue;
-	qnode *head;
-	qnode *tail;
+typedef struct queue {
+	QNODE *head;
+	QNODE *tail;
 	int cnt;
 } QUEUE;
 
@@ -22,11 +22,22 @@ typedef struct {
 	QNODE **hash;
 } LRUCache;
 
-void remove(qnode *cur)
+
+QNODE *create_node(int key, int val)
 {
-	queue *prev = cur->prev;
-	pre->next = cur->next;
-	cur->prev = prev;
+	QNODE *cur = calloc(1, sizeof(QNODE));
+	cur->prev = NULL;
+	cur->next = NULL;
+	cur->key = key;
+	cur->val = val;
+	return cur;
+}
+
+void remove_node(QNODE *cur)
+{
+	QNODE *prev = cur->prev;
+	prev->next = cur->next;
+	cur->next->prev = prev;
 }
 
 void addtohead(QUEUE *queue, QNODE *node)
@@ -41,81 +52,65 @@ void addtohead(QUEUE *queue, QNODE *node)
 
 void movetohead(QUEUE *queue, QNODE *node)
 {
-	remove(node);
-	addtohad(queue, node);
+	remove_node(node);
+	addtohead(queue, node);
 }
 
-QNODE* popTail(QUEUE *queue)
+QUEUE *create_queue(void)
 {
-	QNODE *node = queue->tail->prev;
-	remove(node);
-	return node;
-}
-
-QNODE *cre_queue_node(int key, int val)
-{
-	QNODE *node = calloc(1, sizeof(QNODE));
-	node->key = key;
-	node->val = val;
-	node->prev = NULL:
-	node->next = NULL;
-	return node;
-}
-
-QUEUE *cre_queue(void)
-{
-	QUEUE *obj = calloc(1, sizeof(QUEUE));
-	obj->head = cre_queue_node(-1, 0);
-	obj->tail = cre_queue_node(-1, 0);
-	obj->cnt = 0;
-	return obj;
-}
-
-QNODE **cre_hash(int size)
-{
-	QNODE **hash = calloc(1, sizeof(QNODE *));
-	return hash;
+	QUEUE *queue = calloc(1, sizeof(QUEUE));
+	queue->cnt = 0;
+	queue->head = create_node(-1, 0);
+	queue->tail = create_node(-1, 0);
+	queue->head->next = queue->tail;
+	queue->tail->prev = queue->head;
+	return queue;
 }
 
 LRUCache* lRUCacheCreate(int capacity) {
 	LRUCache *obj = calloc(1, sizeof(LRUCache));
-	if (!obj)
-		return NULL;
+	obj->queue = create_queue();
+	obj->hash = calloc(HASH_SIZE, sizeof(QNODE *));
 	obj->capacity = capacity;
-	obj->queue = cre_queue();
-	obj->hash = cre_hash(HASH_SIZE);
 	return obj;
 }
 
-int lRUCacheGet(LRUCache* obj, int key)
-{
-	if (obj->hash[key] != NULL) {
+int lRUCacheGet(LRUCache* obj, int key) {
+
+	if (obj->hash[key]) {
 		QNODE *cur = obj->hash[key];
-		int data = cur->data;
+		int data = cur->val;
 		movetohead(obj->queue, cur);
 		return data;
 	}
+
 	return -1;
 }
 
-void lRUCachePut(LRUCache* obj, int key, int value)
+QNODE *pop_tail(QUEUE *queue)
 {
+	QNODE *tail = queue->tail->prev;
+	return tail;
+}
+
+void lRUCachePut(LRUCache* obj, int key, int value) {
+
 	if (obj->hash[key]) {
-		//! update val
+		//! update value
 		QNODE *cur = obj->hash[key];
-		cur->val = vale;
+		cur->val = value;
 		movetohead(obj->queue, cur);
 		return;
 	}
 
-	QNODE *node = cre_queue_node(key, value);
-	obj->hash[key] = node;
+	QNODE *new = create_node(key, value);
+	obj->hash[key] = new;
+	addtohead(obj->queue, new);
 	obj->queue->cnt++;
-	addtohead(obj->queue, node);
 
 	if (obj->queue->cnt > obj->capacity) {
-		QNODE *tail = popTail(obj->queue);
-		obj->hash[tail->key] = NULL;
+		QNODE *tail = pop_tail(obj->queue);
+		remove_node(tail);
 		obj->queue->cnt--;
 	}
 }
@@ -127,22 +122,34 @@ void lRUCacheFree(LRUCache* obj) {
 	if (obj->hash)
 		free(obj->hash);
 
-	//! free queue
 	if (obj->queue) {
-		queue *cur = obj->queue->head;
+		QNODE *cur = obj->queue->head;
 		while(cur) {
-			QUEUE *tmp = cur;
+			QNODE *tmp = cur;
 			cur = cur->next;
 			free(tmp);
 		}
-
-		free(obj->queue);
 	}
 	free(obj);
 }
 
 int main(void)
 {
+	int size = 2;
+	LRUCache *cache = lRUCacheCreate(size);
+	//! put (1, 1)
+	lRUCachePut(cache, 1, 1);
+
+	//! put (2, 2)
+	lRUCachePut(cache, 2, 2);
+
+	//! get 1
+	lRUCacheGet(cache, 1);
+
+	//! put (3, 3)
+	lRUCachePut(cache, 3, 3);
+
+	lRUCacheFree(cache);
 	return 0;
 }
 
