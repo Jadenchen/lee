@@ -76,7 +76,6 @@ LRUCache* lRUCacheCreate(int capacity) {
 }
 
 int lRUCacheGet(LRUCache* obj, int key) {
-
 	if (obj->hash[key]) {
 		QNODE *cur = obj->hash[key];
 		int data = cur->val;
@@ -111,6 +110,7 @@ void lRUCachePut(LRUCache* obj, int key, int value) {
 	if (obj->queue->cnt > obj->capacity) {
 		QNODE *tail = pop_tail(obj->queue);
 		remove_node(tail);
+		obj->hash[tail->key] = NULL;
 		obj->queue->cnt--;
 	}
 }
@@ -144,10 +144,13 @@ int main(void)
 	lRUCachePut(cache, 2, 2);
 
 	//! get 1
-	lRUCacheGet(cache, 1);
+	printf("get 1 %d \n", lRUCacheGet(cache, 1));
 
 	//! put (3, 3)
 	lRUCachePut(cache, 3, 3);
+
+	//! get 2
+	printf("get 2 %d \n", lRUCacheGet(cache, 2));
 
 	lRUCacheFree(cache);
 	return 0;
