@@ -46,7 +46,7 @@ void addtohead(QUEUE *queue, QNODE *node)
 	node->next = head->next;
 	head->next = node;
 
-	head->next->prev = node;
+	node->next->prev = node;
 	node->prev = head;
 }
 
