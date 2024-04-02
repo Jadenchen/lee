@@ -44,7 +44,7 @@ static void release_hash(void)
 			remove = curr;
 			curr = curr->next;
 			free(remove);
-		}	
+		}
 	}
 }
 
@@ -52,7 +52,7 @@ static void show_hash(void)
 {
 	hash *curr = NULL;
 	for (size_t i = 0; i < SIZE; i++) {
-		curr  = g_ptHash[i];	
+		curr  = g_ptHash[i];
 		while(curr) {
 			printf("%d ", curr->key);
 			curr = curr->next;
@@ -78,7 +78,7 @@ int *two_sum(int *arr, int len, int target, int *returnSize)
 	return result;
 }
 
-static int haskey(int key, int *index) 
+static int haskey(int key, int *index)
 {
 	int bKey = 0;
 	int hashnum = HASH(key);
@@ -111,7 +111,7 @@ int *two_sum_mdi(int *arr, int len, int target, int *returnSize)
 			break;
 		}
 		add_hash(arr[i], i);
-	}	
+	}
 
 	show_hash();
 
@@ -135,7 +135,7 @@ void show(hash **head, int len)
 			printf("key %d ", curr->key);
 			curr = curr->next;
 		}
-	}	
+	}
 }
 
 int hasKey(hash **patHash, int len, int key, int *index)
@@ -212,7 +212,7 @@ int* twosum(int* nums, int numsSize, int target, int* returnSize)
 
 	show(patHash, numsSize);
 	release_hash(patHash, numsSize);
-	return result; 
+	return result;
 }
 
 int main(void)
@@ -223,14 +223,14 @@ int main(void)
 	int returnSize = 0;
 	int len = sizeof(arr)/sizeof(int);
 	int *result = NULL;
-#if 0
+#if 1
 	result = two_sum(arr, len, target, &returnSize);
-	for(size_t i = 0; i < returnSize; i++) 
+	for(size_t i = 0; i < returnSize; i++)
 		printf("%d ", result[i]);
 #endif
 	//	result = two_sum_mdi(arr, len, target, &returnSize);
-	result = twosum(arr, len, target, &returnSize); 
-	for(size_t i = 0; i < returnSize; i++) 
+	result = twosum(arr, len, target, &returnSize);
+	for(size_t i = 0; i < returnSize; i++)
 		printf("%d ", result[i]);
 	printf("\n");
 	if (result)
